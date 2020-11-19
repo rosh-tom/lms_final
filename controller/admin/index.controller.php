@@ -12,11 +12,11 @@
             'lastname'  => $received_data->lastname,
             'email'     => $received_data->email,
             'pass'      => password_hash($received_data->password, PASSWORD_DEFAULT),
-            'profilepic'=> '', 
+            'profilepic'=> 'icons/user.svg', 
             'types'      => $received_data->type
         ];  
-        $result = "INSERT INTO tbl_user(firstname, middlename, lastname, email, pass, profilepic, types) VALUES(
-            :firstname, :middlename, :lastname, :email, :pass, :profilepic, :types 
+        $result = "INSERT INTO tbl_user(usr_id, firstname, middlename, lastname, email, pass, profilepic, types) VALUES(
+            :usr_id, :firstname, :middlename, :lastname, :email, :pass, :profilepic, :types
         )";
         $result = DB::query($result, $data);
         unset($data);

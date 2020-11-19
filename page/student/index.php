@@ -1,4 +1,4 @@
-<?php include 'includes/header.php'; ?>
+<?php include '../_includes/header.php'; ?>
     <title>Welcome to SDSSU CANTILAN LMS</title> 
 </head>
 <body> 
@@ -16,7 +16,7 @@
 
 
 <div class="container">
-    <?php include 'includes/navigation.php'; ?>
+    <?php include '../_includes/navigation.php'; ?>
 
 
     <div id="index">
@@ -59,4 +59,4 @@
 
 
 
-<?php include 'includes/footer.php'; ?>
+<?php include '../_includes/footer.php'; ?>

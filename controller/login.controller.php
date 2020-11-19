@@ -18,12 +18,12 @@ if(isset($_POST['btn_signin'])){
             if($userType == 'Faculty'){
                 $_SESSION['loggedType'] = $userType;
                 $_SESSION['loggedID'] = $result[0]['usr_id']; 
-                header("location: ../faculty/index.php");
+                header("location: ../page/faculty/index.php");
             }
             elseif($userType == 'Student'){
                 $_SESSION['loggedType'] = $userType;
                 $_SESSION['loggedID'] = $result[0]['usr_id']; 
-                header("location: ../student/index.php");
+                header("location: ../page/student/index.php");
             }
  
        }else{

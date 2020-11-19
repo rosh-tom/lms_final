@@ -3,13 +3,13 @@
                 <ul class="nav nav-pills pull-right"> 
                     <li role="presentation" class="active hamburger_menu">
                         <a class="a_menu" @click="toggleShowDropNav()">
-                            <img src="../icons/menu.svg">
+                            <img src="../../icons/menu.svg">
                         </a>
                     </li> 
                 </ul>  
                 <h3 class="text-muted" style="color: #428bca">
                     <a href="index.php" class="deco-none">
-                        <img src="../icons/logo.png" class="logo">  
+                        <img src="../../icons/logo.png" class="logo">  
                         SDSSU Cantilan LMS
                     </a>
                 </h3>  
@@ -22,7 +22,7 @@
                     <!-- <a href="#" class="list-group-item active">Home</a>
                     <a href="#" class="list-group-item mymenu">Services</a>
                     <a href="#" class="list-group-item mymenu">Accounts</a> -->
-                    <a href="../controller/logout.controller.php" class="list-group-item mymenu">Log Out</a>
+                    <a href="../../controller/logout.controller.php" class="list-group-item mymenu">Log Out</a>
                 </div> 
             </div> 
         </div> 
