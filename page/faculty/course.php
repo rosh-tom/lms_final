@@ -16,66 +16,114 @@
     <?php include '../_includes/navigation.php'; ?>
 
 
-    <div id="">
+<div id="course">
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  --> 
 <a href="index.php" class="btn btn-info btn-sm"><b><</b> Back</a>
 
     <div class="row">  
         <div class="col-sm-12 margin-b-20">   
-            <h3>Enrolled Courses: <button class="btn btn-primary btn-sm">Add</button></h3>
+            <h3>Enrolled Courses: 
+                <button 
+                    class="btn btn-primary btn-sm"
+                    @click="toggle_addCourse()">
+                    Add
+                </button>
+            </h3>
         </div>
     </div>
     <!-- /.row   -->
 
+    <template v-if="success">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="alert alert-success">
+                <a class="close" @click="success=false">&times;</a>
+                    {{ message }}
+                </div>
+            </div> 
+        </div>
+        <!-- /.row  --> 
+    </template>  
 
+
+
+<template v-for="course in courses">
     <div class="row"> 
         <div class="col-sm-12">
-            <div class="panel panel-success">
+            <div class="panel panel-success"> 
+
                 <div class="panel-body">
                     <h3 class="text-center"> 
-                    Handled Courses  
+                        {{course.descriptitle}}
                     </h3>
-                </div> 
+                    <p class="text-center paragraph">
+                        {{course.num}} | {{course.section}}
+                    </p>
+                    <p class="text-center paragraph">
+                        {{course.start_time}} - {{course.end_time}} | {{course.schedule}}
+                    </p>
+                    <p class="text-center paragraph">
+                        Accesscode: <strong>{{course.accesscode}}</strong> <button @click="copyAccessCode(course.accesscode)">Copy</button>
+                    </p> 
+                </div>  
+                <input type="hidden" id="code" v-model="accesscode">
 
                 <div class="panel-footer">
-                    <center>
-                    <a href="course.php" class="btn btn-success ">
-                    Manage Course
-                    </a>
-                    </center>
+                    <button class="btn btn-sm btn-danger" @click="delete_course(course.crs_id)">Delete</button> 
+                    <a :href="'viewcourse.php?course='+ course.crs_id" class="pull-right btn btn-sm btn-primary">View</a> 
+                    <button class="pull-right btn btn-sm btn-success m-r-15" @click="edit_Course(course.crs_id)">Edit</button> 
+                    <button class="pull-right btn btn-sm btn-info m-r-15" @click="showAccessCode(course.accesscode, course.crs_id)">Change AccessCode</button>
                 </div>
+                
             </div>
         </div>
     </div>
-<!-- /.row  -->
+<!-- /.row  --> 
+</template>
+<template v-if="noCourse">  
+<center>
+    <h1> No Course Yet. </h1>
+</center>
+</template>
 
 
 
 
 <!-- modal  -->
-<form action="controller/course.controller.php" method="post">
-          z
+<!-- <form action="controller/course.controller.php" method="post">  -->
+ 
+<template v-if="modal_addCourse"> 
             <div class="popup" tabindex="-1">
               <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" @click="toggleShowAddNewCourse()"><span>&times;</span></button>
-                  <h4 class="modal-title">Add New Course</h4>
+                  <button type="button" class="close" @click="toggle_addCourse()"><span>&times;</span></button>
+                  <h4 class="modal-title">{{ (mode=='save') ? 'Add New Course' : 'Update Course'}}</h4>
                 </div>
                 <div class="modal-body">  
                   <div class="row"> 
                       <div class="col-sm-6">
                         <div class="form-group"> 
                           <label>Course Number</label>
-                          <input type="text" class="form-control" name="crs_number">
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            v-model="number"
+                            required
+                            >
                         </div>
                       </div>
 
                       <div class="col-sm-6">
                         <div class="form-group"> 
                           <label>Course Section</label>
-                          <input type="text" class="form-control" name="crs_section">
+                          <input 
+                            type="text" 
+                            class="form-control" 
+                            v-model="section"
+                            required
+                            >
                         </div>
                       </div> 
                   </div>
@@ -84,7 +132,12 @@
                         <div class="col-sm-12">
                           <div class="form-group"> 
                             <label>Descriptive Title</label>
-                            <input type="text" class="form-control" name="crs_descriptitle">
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                v-model="descriptitle"
+                                required
+                                >
                           </div>
                         </div> 
                     </div>
@@ -92,15 +145,23 @@
                     <div class="row"> 
                         <div class="col-sm-6">
                           <div class="form-group"> 
-                            <label>Time (from - to)</label> 
+                            <label>Time (Start - End)</label> 
                                 <div class="row">
                                     <div class="col-sm-6">  
-                                        <input type="time" class="form-control" name="crs_time">
+                                        <input 
+                                            type="time" 
+                                            class="form-control" 
+                                            v-model="start_time" 
+                                            >
                                     </div>
                                    
                                       
                                     <div class="col-sm-6">  
-                                        <input type="time" class="form-control" name="crs_time">
+                                        <input 
+                                            type="time" 
+                                            class="form-control"
+                                            v-model="end_time" 
+                                            >
                                     </div>
                                 </div> 
                           </div>
@@ -109,17 +170,58 @@
                         <div class="col-sm-6">
                           <div class="form-group"> 
                             <label>Days</label>
-                                <select name="" class="form-control">
+                                <select v-model="days" class="form-control">
                                     <option>MWF</option>
+                                    <option>TTH</option>
+                                    <option>S</option>
                                 </select>
                           </div>
                         </div> 
                     </div> 
-                </div> 
+                    <input 
+                        type="hidden" 
+                        v-model="hiddenID"
+                        >
+
+                    <template v-if="error">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger">
+                                <a class="close" @click="error=false">&times;</a>
+                                    <strong>Error!</strong> Please Fill up the following.
+                                </div>
+                            </div> 
+                        </div>
+                        <!-- /.row  --> 
+                    </template>  
+
+                </div>  
                 <!-- /. modal body  -->
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm" @click="toggleShowAddNewCourse()">Close</button>
-                    <input type="submit" class="btn btn-primary btn-sm" name="btn_saveCourse" value="Save">
+                        <button 
+                            type="button" 
+                            class="btn btn-default btn-sm"
+                            @click="toggle_addCourse()"
+                            >Close
+                        </button>  
+                        <template v-if="mode=='save'">  
+                            <button 
+                                type="button"  
+                                @click="save_course()"
+                                class="btn btn-primary btn-sm"
+                                >
+                                Save
+                            </button>   
+                        </template>
+                        <template v-if="mode=='update'">  
+                            <button 
+                                type="button"  
+                                @click="update_course(hiddenID)"
+                                class="btn btn-info btn-sm"
+                                >
+                                Update
+                            </button>   
+                        </template>
                     </div> 
                 
                 <!-- /footer  -->
@@ -127,17 +229,76 @@
               </div>
             </div> 
           <!-- /end add modal  -->
-          </form> 
+          <!-- </form>  -->
+</template>
+
+
+<template v-if="changeAccessCode">  
+            <div class="popup" tabindex="-1">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <button 
+                        type="button" 
+                        class="close" 
+                        @click="changeAccessCode = false"
+                        > <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">Change Accesscode</h4>
+
+                </div>
+                <!-- /.header  -->
+
+                <div class="modal-body">   
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label for="">Access Code: </label>
+                            <p>
+                                <button class="btn btn-sm btn-success" @click="generateCode()">Generate</button>
+                            </p>
+                            
+                            <input 
+                                type    = "text" 
+                                class   = "form-control"
+                                v-model = "accesscode"
+                            /> 
+                        </div>
+                    </div>
+                </div> 
+                <!-- /. modal body  -->
+
+                <div class="modal-footer">
+                    <button 
+                        type="button" 
+                        class="btn btn-default btn-sm" 
+                        @click="changeAccessCode = false"
+                        >Close
+                    </button> 
+                    <button
+                        type    = "button"
+                        class   = "btn btn-primary btn-sm" 
+                        @click  = "update_accesscode()"
+                        > Update
+                    </button>
+                </div>
+                <!-- /footer  -->
+
+                </div>
+              </div>
+            </div> 
+          <!-- /modal  -->  
+</template> 
+
 <!-- /.modal  -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  --> 
     
 </div>
-    <!-- /#index  --> 
+    <!-- /#course  --> 
 
 </div>
 <!-- /.container  -->   
 
-<script>
-  
+<script src="vue/course.js"> 
 </script> 
 <?php include '../_includes/footer.php'; ?>

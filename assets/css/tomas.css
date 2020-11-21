@@ -99,6 +99,9 @@ body {
 .m-r-20{
   margin-right: 20px;
 }
+.m-r-15{
+  margin-right: 15px;
+}
 
 /* ===================================================== SIGN IN  */
 
@@ -225,4 +228,12 @@ max-width: 40px;
 width: 40%;
 margin-right: 20px;
 border-radius: 50%;
+}
+
+.btn-unique{
+  border:none;
+  color: #337ab7;
+}
+.btn-uniqueActive{
+  border:none; 
 }
