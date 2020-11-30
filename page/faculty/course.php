@@ -70,8 +70,8 @@
                 <input type="hidden" id="code" v-model="accesscode">
 
                 <div class="panel-footer">
-                    <button class="btn btn-sm btn-danger" @click="delete_course(course.crs_id)">Delete</button> 
-                    <a :href="'viewcourse.php?course='+ course.crs_id" class="pull-right btn btn-sm btn-primary">View</a> 
+                    <button class="btn btn-sm btn-danger" @click="delete_course(course.crs_id, course.descriptitle)">Delete</button> 
+                    <a :href="'post.php?course='+ course.crs_id" class="pull-right btn btn-sm btn-primary">View</a> 
                     <button class="pull-right btn btn-sm btn-success m-r-15" @click="edit_Course(course.crs_id)">Edit</button> 
                     <button class="pull-right btn btn-sm btn-info m-r-15" @click="showAccessCode(course.accesscode, course.crs_id)">Change AccessCode</button>
                 </div>

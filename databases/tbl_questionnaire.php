@@ -5,14 +5,16 @@ include 'db.php';
 $tablename = "tbl_questionnaire";
 
 $result = "create table ". $tablename ." (
-    qstnnr_id int(11) unsigned auto_increment primary key,
-    qstnnr_title varchar(255),
-    qstnnr_description varchar(255),
-    qstnnr_type varchar(100),
-    qstnnr_item varchar(5), 
-    usr_id int(11),
-    crs_id int(11), 
-    active varchar(2),
+    id int(11) unsigned auto_increment primary key,
+    qstnnr_id varchar(255) not null,
+    title varchar(255),
+    descript varchar(255),
+    types varchar(100), 
+    items int(11),
+    status varchar(100) default 'inactive',
+    usr_id varchar(255) not null,
+    crs_id varchar(255) not null, 
+    active varchar(1) default '1',
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp on update current_timestamp
 )";

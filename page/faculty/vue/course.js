@@ -74,8 +74,8 @@ var app = new Vue({
 
             } 
         },
-        delete_course: function (id){
-            if(confirm("Are you sure you want to delete course? ")){
+        delete_course: function (id, descriptitle){
+            if(confirm("Are you sure you want to delete "+ descriptitle + " course?")){
                 axios.post("../../controller/faculty/course.controller.php", {
                     action: 'delete_course',
                     crs_id: id

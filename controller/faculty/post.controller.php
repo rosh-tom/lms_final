@@ -1,47 +1,60 @@
-<?php session_start();
-include '../../classes/db.php';  
+<?php  session_start();
+include '../../classes/db.php'; 
 
-header('Access-Control-Allow-Origin: *');
-if(isset($_FILES['file']['name'])){
-    $filename = $_FILES['file']['name'];
-}else{
-    $filename = '';
+$received_data = json_decode(file_get_contents("php://input"));
+
+if($received_data->action == 'get_posts'){
+    $data = [
+        'usr_id'    => $_SESSION['loggedID'],
+        'crs_id'    => $received_data->crs_id,
+        'active'    => '1'
+    ];
+    $fetchAllPost = "SELECT * FROM tbl_post WHERE usr_id=:usr_id AND crs_id=:crs_id AND active=:active ORDER BY created_at DESC";
+    $fetchAllPost = DB::query($fetchAllPost, $data); 
+    echo json_encode($fetchAllPost);
 }
-$data = [ 
-    'pst_id'        => uniqid(),
-    'title'         => $_POST['title'],
-    'descript'      => $_POST['description'],
-    'locale'        => '',
-    'types'         => '', 
-    'namefile'      => $filename, 
-    'usr_id'        => $_SESSION['loggedID'],
-    'crs_id'        => $_POST['crs_id']
-];  
+elseif($received_data->action == 'delete_post'){
+    $data = [
+        'active'    => '0',
+        'pst_id'    => $received_data->pst_id
+    ]; 
+    $deleteComment = "DELETE FROM tbl_comment WHERE pst_id=:pst_id";
+    DB::query($deleteComment, array(':pst_id'=>$data['pst_id']));
 
- 
-if($filename != ""){
-    $type = $_FILES['file']['type'];
-    $type = explode('/', $type);
-    $data['types'] = $type[0];
-    $data['namefile'] = $filename;
- 
+    $deletePost = "UPDATE tbl_post SET active=:active WHERE pst_id=:pst_id";
+    $deletePost = DB::query($deletePost, $data);  
 
-    $foldername = $data['crs_id'];
-
-    $data['locale'] = "uploads/".$foldername."/".basename($filename);
-    $target = "../../". $data['locale'];
-    move_uploaded_file($_FILES['file']['tmp_name'], $target);  
+    unset($data); 
+    if($deletePost){
+        $data['success'] = true;
+    }else{
+        $data['success'] = false;
+    }  
+    echo json_encode($data);
+}
+elseif($received_data->action == 'save_post'){
+    $data = [
+        'title'=>$received_data->title,
+        'description'=> $received_data->description
+    ];
+    echo json_encode($data);
 }
 
-$savePost = "INSERT INTO tbl_post (pst_id, title, descript, locale, types, namefile, usr_id, crs_id) VALUES(
-    :pst_id, :title, :descript, :locale, :types, :namefile, :usr_id, :crs_id
-)";
+elseif($received_data->action == 'get_post'){
+    $data = [
+        'pst_id' => $received_data->pst_id
+    ]; 
+    $fetchPost = "SELECT * FROM tbl_post WHERE pst_id = :pst_id";
+    $fetchPost = DB::query($fetchPost, $data)[0];  
+   
+        echo json_encode($fetchPost);
+  
+}
+elseif($received_data->action == 'fetch_userInfo'){ 
+    $userInfo = "SELECT usr_id, firstname, lastname, types FROM tbl_user WHERE usr_id=:usr_id";
+    $userInfo = DB::query($userInfo, array(':usr_id'=>$_SESSION['loggedID']))[0];
 
-$savePost = DB::query($savePost, $data);  
-if($savePost){
-    $success = 'true';
-}else{
-    $success = 'false';
+    echo json_encode($userInfo);
+
 } 
-echo json_encode($success);
 ?>

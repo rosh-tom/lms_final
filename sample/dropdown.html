@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/css/turner.css"> 
+<link rel="stylesheet" href="../assets/css/tomas.css"> 
+<script src="../assets/js/vue.js"> </script>
+<script src="../assets/js/axios.js"> </script>
+
+ 
+<style>
+  
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content { 
+display: block;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.anchor {  
+  display: block;
+  width: 100%;
+}
+ 
+</style>
+</head>
+<body>
+
+<h2>Hoverable Dropdown</h2>
+<p>Move the mouse over the button to open the dropdown menu.</p>
+
+<div id="content">
+<div class="container">
+    <div class="dropdown">
+        <button class="btn btn-default btn-sm" @click="toggle_drpdwn()">
+            <img v-if="drpdwn.arrow == 'down'" src=" ../icons/caret-down.svg" alt="" width="10px">
+            <img v-if="drpdwn.arrow == 'up'" src=" ../icons/caret-up.svg" alt="" width="10px">
+        </button>
+        <div class="dropdown-content" v-if="drpdwn.toggled">
+            <button class="anchor btn btn-sm btn-default">Edit</button>
+            <button class="anchor btn btn-sm btn-default">Delete</button>
+            <button class="anchor btn btn-sm btn-default">View</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            
+        </div>
+    </div>
+   
+
+
+</div>
+  
+</div>
+    <!-- /content  -->
+</body>
+</html>
+
+<script>
+    var app = new Vue({
+        el: '#content',
+        data: {
+            drpdwn: {
+                'toggled': false,
+                'arrow': 'down'
+            }
+        },
+        methods: {
+            toggle_drpdwn: function(){
+                this.drpdwn.toggled = !this.drpdwn.toggled;
+                if(this.drpdwn.arrow != 'down'){
+                    this.drpdwn.arrow = 'down'
+                }else{
+                    this.drpdwn.arrow = 'up'
+                }
+            },
+
+            print: function(){
+                axios.get(" ", {
+                        action: 'numberOfQuestion',  
+                    }).then(function(response){
+                        alert(response.data);
+                    });
+            },
+            
+        },
+        mounted() {
+            this.print();
+        },
+    });
+
+</script>

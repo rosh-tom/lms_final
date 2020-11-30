@@ -22,12 +22,12 @@ if($received_data->action == 'save_course'){
 
     $saveCourse = DB::query($saveCourse, $data);  
     if($saveCourse){
-        $error = false; 
+        $success = true; 
         mkdir("../../uploads/".$data['crs_id']);
     }else{
-        $error = true; 
+        $success = false; 
     }
-    echo json_encode($error);
+    echo json_encode($success);
     
 }
 elseif($received_data->action == 'fetchAllCourse'){
