@@ -24,6 +24,10 @@ if(isset($_POST['btn_signin'])){
                 $_SESSION['loggedType'] = $userType;
                 $_SESSION['loggedID'] = $result[0]['usr_id']; 
                 header("location: ../page/student/index.php");
+            }elseif($userType == 'Admin'){
+                $_SESSION['loggedType'] = $userType;
+                $_SESSION['loggedID'] = $result[0]['usr_id']; 
+                header("location: ../page/admin/index.php");
             }
  
        }else{

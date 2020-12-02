@@ -1,12 +1,15 @@
 <div class="container">
             <footer class="footer"> 
-                <p class="text-center">
-                    Account: 
+                <p class="text-center"> 
                     <label for="">
-                        <?= $user_info['firstname'] ." ". $user_info['lastname']?> 
+                        <?= $loggedInfo['firstname'] ." ". $loggedInfo['lastname']?> 
                          | 
                          <span>
-                             <?= $user_info['types'] ?>
+                             <?= $loggedInfo['types'] ?>
+                         </span>
+                         | 
+                         <span>
+                             <a href="account.php">Account</a>
                          </span>
                          | 
                         <span>
@@ -21,3 +24,5 @@
         </div>
     </body>
 </html>
+
+<?php unset($_SESSION['temp']) ?>

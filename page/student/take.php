@@ -55,8 +55,8 @@
             <div class="well well-sm">
                 <p> <?= $itemNumber++ ?>. <?= $question['question'] ?> </p> 
 <?php 
-    $recoverAnswer = "SELECT answer FROM tbl_answer where qstn_id=:qstn_id";
-    $recoverAnswer = DB::query($recoverAnswer, array(':qstn_id'=>$question['qstn_id'])); 
+    $recoverAnswer = "SELECT answer FROM tbl_answer where qstn_id=:qstn_id AND usr_id=:usr_id";
+    $recoverAnswer = DB::query($recoverAnswer, array(':qstn_id'=>$question['qstn_id'], ':usr_id'=>$user_info['usr_id'])); 
     if(count($recoverAnswer) > 0){ 
         $countRecoverAnswer = 1;
         $recoverAnswer = $recoverAnswer[0]['answer'];
@@ -152,7 +152,7 @@
                     qstnnr_id: '<?= $_GET['questionnaire']?>',
                     crs_id: '<?= $_GET['course']?>'
                 }).then(function(response){
-                    alert(response.data);
+                   
                 });
             },
             submitQuestionnaire: function(){

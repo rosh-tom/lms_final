@@ -218,15 +218,14 @@
                                 <div class="form-group"> 
                                     <template v-if="comment.usr_id == userInfo.usr_id"> 
                                         <p class="comment-form" style="margin-top: -10px">
-                                            <img :src="'../../'+comment.profilepic" width="25px"> 
+                                            <img :src="'../../'+comment.profilepic" class="cmmnt-pp"> 
                                             <b style="color: #337ab7">{{comment.firstname}} {{comment.lastname}} : </b>
                                             <span class="paragraph" >{{comment.comment}}</span>
                                         </p> 
                                     </template>
-                                    <template v-else>
-                                         
-                                    <p class="comment-form">
-                                        <img :src="'../../'+comment.profilepic" width="25px"> 
+                                    <template v-else> 
+                                    <p class="comment-form" style="margin-top: -10px">
+                                        <img :src="'../../'+comment.profilepic" class="cmmnt-pp"> 
                                         <b>{{comment.firstname}} {{comment.lastname}} : </b>
                                         <span>{{comment.comment}}</span>
                                     </p> 

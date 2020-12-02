@@ -1,7 +1,7 @@
 <?php  include '../../validation/validate.php';
 include '../../classes/db.php';
 $loggedInfo = "SELECT * FROM tbl_user where usr_id=:usr_id";
-$loggedInfo = DB::query($loggedInfo, array(':usr_id'=>$_SESSION['loggedID']));
+$loggedInfo = DB::query($loggedInfo, array(':usr_id'=>$_SESSION['loggedID']))[0];
 
  ?>
 

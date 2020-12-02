@@ -7,6 +7,7 @@ $tablename = "tbl_user";
 $result = "CREATE TABLE ". $tablename ." (
     id int(6) unsigned auto_increment primary key,
     usr_id varchar(255) not null unique,
+    std_id varchar(255) unique,
     firstname varchar(100) not null,
     middlename varchar(100),
     lastname varchar(100) not null,

@@ -22,6 +22,7 @@
                     <!-- <a href="#" class="list-group-item active">Home</a>
                     <a href="#" class="list-group-item mymenu">Services</a>
                     <a href="#" class="list-group-item mymenu">Accounts</a> -->
+                    <a href="account.php" class="list-group-item mymenu">Account</a>
                     <a href="../../controller/logout.controller.php" class="list-group-item mymenu">Log Out</a>
                 </div> 
             </div> 

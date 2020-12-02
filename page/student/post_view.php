@@ -104,7 +104,7 @@
                                 <div class="form-group">
                                     <template v-for="comment in comments"> 
                                         <p class="comment-form" style="margin-top: 10px;">
-                                                <img :src="'../../'+ comment.profilepic" width="25px" class="pp"> 
+                                                <img :src="'../../'+ comment.profilepic" style="height: 25px; width: 25px" class="pp"> 
                                                 <template v-if="comment.usr_id == '<?= $user_info['usr_id'] ?>'">
                                                     <b style="color: rgb(51, 122, 183);">{{comment.firstname}} {{comment.lastname}} :</b>  
                                                 </template>
@@ -148,23 +148,27 @@
         methods: { 
             fetch_allComment: function(){
                 axios.post("../../controller/students/viewpost.controller.php", {
-                    action: 'fetch_allComment',
-                    crs_id: this.crs_id,
+                    action: 'fetch_allComment', 
                     pst_id: this.pst_id
                 }).then(function(response){
-                    app.comments = response.data;
+                    app.comments = response.data; 
                 });  
             }, 
             add_comment: function(){
-                axios.post("../../controller/students/viewpost.controller.php", {
-                    action: 'add_comment',
-                    comment: this.comment,
-                    crs_id: this.crs_id,
-                    pst_id: this.crs_id 
-                }).then(function(response){ 
-                }); 
-                this.comment = '';
-                this.fetch_allComment();
+                if(this.comment == ""){
+
+                }else{
+                    axios.post("../../controller/students/viewpost.controller.php", {
+                        action: 'add_comment',
+                        comment: this.comment,
+                        crs_id: this.crs_id,
+                        pst_id: this.pst_id 
+                    }).then(function(response){  
+                    }); 
+                    this.comment = '';
+                    this.fetch_allComment();
+                }
+               
             } 
         },
         created: function(){

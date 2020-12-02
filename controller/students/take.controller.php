@@ -23,8 +23,8 @@ if($received_data->action == 'choose'){
         $correct = '0';
     }  
 
-    $checkIfExist = "SELECT * FROM tbl_answer where qstn_id = :qstn_id";
-    $checkIfExist = DB::query($checkIfExist, array(':qstn_id'=>$data['qstn_id']));
+    $checkIfExist = "SELECT * FROM tbl_answer where qstn_id = :qstn_id AND usr_id=:usr_id";
+    $checkIfExist = DB::query($checkIfExist, array(':qstn_id'=>$data['qstn_id'], ':usr_id'=>$_SESSION['loggedID']));
 
     if(count($checkIfExist) > 0){
         $updateAnswer = "UPDATE tbl_answer SET answer=:answer, correct=:correct WHERE qstn_id = :qstn_id";
@@ -49,10 +49,10 @@ if($received_data->action == 'choose'){
             'qstn_id'   => $data['qstn_id'],
             'qstnnr_id' => $data['qstnnr_id']
         ]; 
-        $saveAnswer = DB::query($saveAnswer, $saveAnswerData);  
+        $saveAnswer = DB::query($saveAnswer, $saveAnswerData); 
     }
 
-    echo json_encode(print_r($saveAnswer));
+   
   
 }
 elseif($received_data->action == 'submitQuestionnaire'){

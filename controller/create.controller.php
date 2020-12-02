@@ -30,7 +30,8 @@ if(isset($_POST['btn_signup'])){
         $create = DB::query($create, $data);
          
         if($create){
-            unset($data);
+            mkdir("../uploads/profiles/".$data['usr_id']);
+            unset($data); 
             $data['message'] = "Account Successfully Created. Please Log in"; 
             $data['success'] = true;
             $_SESSION['temp'] = $data;

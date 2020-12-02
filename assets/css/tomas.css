@@ -42,6 +42,21 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
+.admin{
+  max-width: 900px !important;
+}
+.sticky{
+  position: -webkit-sticky;
+position: sticky;
+top: 0;
+
+}
+.navigation-admin{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 16px;
+}
+
 /* Customize container */
 @media (min-width: 768px) {
   .container {
@@ -299,4 +314,14 @@ border-radius: 50%;
 
 .pp{
   border-radius: 50% !important;
+}
+
+.acc-row{
+  margin-bottom: 5px !important;
+}
+
+.cmmnt-pp{
+  height: 25px !important;
+  width: 25px !important; 
+  border-radius: 50%;
 }

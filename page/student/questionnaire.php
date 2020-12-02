@@ -35,7 +35,7 @@
     $fclty_id = "SELECT usr_id FROM tbl_course WHERE crs_id=:crs_id";
     $fclty_id = DB::query($fclty_id, array(':crs_id'=>$_GET['course']))[0]['usr_id'];
 
-    $questionnaires = "SELECT * FROM tbl_questionnaire WHERE usr_id=:fclty_id and crs_id=:crs_id and active = '1' ORDER BY created_at DESC";
+    $questionnaires = "SELECT * FROM tbl_questionnaire WHERE usr_id=:fclty_id and crs_id=:crs_id and status = 'active' ORDER BY created_at DESC";
     $questionnairesData = [
         'fclty_id'  => $fclty_id,
         'crs_id'    => $_GET['course']
@@ -59,8 +59,8 @@
                         <p> - <?= $questionnaire['types']?></p> 
                     </div>
 <?php 
-    $studentProgress = "SELECT * FROM tbl_answer WHERE qstnnr_id = :qstnnr_id";
-    $studentProgress = DB::query($studentProgress, array('qstnnr_id'=>$questionnaire['qstnnr_id']));
+    $studentProgress = "SELECT * FROM tbl_answer WHERE qstnnr_id = :qstnnr_id and usr_id=:usr_id";
+    $studentProgress = DB::query($studentProgress, array(':qstnnr_id'=>$questionnaire['qstnnr_id'], ':usr_id'=>$user_info['usr_id']));
     $studentProgress = count($studentProgress);
 
     $questionItems = "SELECT * FROM tbl_question WHERE qstnnr_id=:qstnnr_id and usr_id=:faculty";
