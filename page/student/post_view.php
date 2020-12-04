@@ -20,27 +20,7 @@
 ?> 
 
 <title>View Post - <?= $course_info['descriptitle'] ?> | SDSSU LMS</title> 
-<style>
-
-.view-post-center{
-    margin: 0 auto !important;  
-    margin-top: 20px !important;
-}
-@media (min-width: 768px) {
-    .view-post-center {   
-        margin-left: 25px !important;
-        width: 110% !important;
-    } 
-}
  
-.view-post-post{
-    margin: 0 auto;
-    max-width: 80%; 
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s; 
-}
-
-</style>
 </head>
 <body> 
 
