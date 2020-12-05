@@ -3,31 +3,40 @@ include '../../classes/db.php';
 
 $received_data = json_decode(file_get_contents("php://input"));
 
-if($received_data->action == 'faculty_details'){
+if($received_data->action == 'student_details'){
     $data = [
         'usr_id' => $received_data->usr_id
     ];
     
-    $faculty_details = "SELECT * FROM tbl_user WHERE usr_id=:usr_id";
-    $faculty_details = DB::query($faculty_details, $data)[0];
+    $student_details = "SELECT * FROM tbl_user WHERE usr_id=:usr_id";
+    $student_details = DB::query($student_details, $data)[0];
 
-    echo json_encode($faculty_details); 
+    echo json_encode($student_details); 
 }
-elseif($received_data->action == 'faculty_courses'){
+elseif($received_data->action == 'student_courses'){
     $data = [
         'usr_id' => $received_data->usr_id
     ];
+    $mycourses = [];
 
-    $faculty_courses = "SELECT * FROM tbl_course WHERE usr_id=:usr_id";
-    $faculty_courses = DB::query($faculty_courses, $data);
+    $courses = "SELECT crs_id FROM tbl_studentcourse WHERE usr_id=:usr_id";
+    $courses = DB::query($courses, $data);
+ 
+    foreach($courses as $course){
+        $student_courses = "SELECT * FROM tbl_course WHERE crs_id=:crs_id";
+        $student_courses = DB::query($student_courses, array(':crs_id'=>$course['crs_id']));
+        
+        $mycourses = $student_courses;
+    }
+   
 
-    echo json_encode($faculty_courses);
+    echo json_encode($mycourses);
 }
 elseif($received_data->action == 'update_password'){
     $data = [
         'password'  => $received_data->password,
         'newPass'   => password_hash($received_data->newPassword, PASSWORD_DEFAULT),
-        'usr_id'    => $received_data->faculty_id 
+        'usr_id'    => $received_data->student_id 
     ];
 
     $currentPassword = "SELECT pass from tbl_user WHERE usr_id=:usr_id";
@@ -57,7 +66,7 @@ elseif($received_data->action == 'set_active'){
     $set_active = DB::query($set_active, $data);
  
 }
-elseif($received_data->action == 'update_faculty'){
+elseif($received_data->action == 'update_student'){
     $data = [ 
         'std_id' => $received_data->std_id ,
         'department' => $received_data->department ,
@@ -68,7 +77,7 @@ elseif($received_data->action == 'update_faculty'){
         'usr_id'    => $received_data->usr_id
     ]; 
 
-    $update_faculty = "UPDATE tbl_user SET 
+    $update_student = "UPDATE tbl_user SET 
                             std_id=:std_id, 
                             firstname=:firstname, 
                             middlename=:middlename, 
@@ -76,9 +85,9 @@ elseif($received_data->action == 'update_faculty'){
                             email=:email,
                             department=:department
                             WHERE usr_id=:usr_id";
-    $update_faculty = DB::query($update_faculty, $data); 
+    $update_student = DB::query($update_student, $data); 
 
-    if($update_faculty){
+    if($update_student){
         unset($data);
         $data['success'] = true;
     }else{

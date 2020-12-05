@@ -10,7 +10,7 @@
 <div class="container admin">
     <?php include '../_includes/navigation.php'; ?>  
     
-    <a href="faculty.php" class="btn btn-info btn-sm"><b><</b> Back</a> 
+    <a href="student.php" class="btn btn-info btn-sm"><b><</b> Back</a> 
     <br><br>
     
 <div id="content"> 
@@ -18,9 +18,9 @@
     <div class="well">
         <div class="row admin-row"> 
             <div class="col-sm-12 col">
-                <h3 class="sub-header">Details for Faculty: 
+                <h3 class="sub-header">Details for student: 
                     <span class="text-primary">
-                        {{faculty.firstname}} {{faculty.middlename}} {{faculty.lastname}}
+                        {{student.firstname}} {{student.middlename}} {{student.lastname}}
                     </span>
                 </h3> 
                 <hr class="hr-style">
@@ -30,7 +30,7 @@
         <div class="row admin-row"> 
             <div class="col-sm-4 col">
                 <center>
-                    <img :src="'../../'+ faculty.profilepic" class="view-post-post" style="width: 100%; height: 200px;">
+                    <img :src="'../../'+ student.profilepic" class="view-post-post" style="width: 100%; height: 200px;">
                 </center>
                 <br>
                
@@ -39,21 +39,21 @@
             <div class="col-sm-4 col">
                 <div class="form-group">
                     <label for="exampleInputEmail1">ID </label>
-                    <span class="form-control" > {{faculty.std_id}} </span>
+                    <span class="form-control" > {{student.std_id}} </span>
                 </div> 
             </div>  
 
             <div class="col-sm-8 col">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Department </label>
-                    <span class="form-control" > {{faculty.department}} </span>
+                    <span class="form-control" > {{student.department}} </span>
                 </div> 
             </div> 
 
             <div class="col-sm-8 col">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email </label>
-                    <span class="form-control" > {{faculty.email}} </span>
+                    <span class="form-control" > {{student.email}} </span>
                 </div> 
             </div>   
             
@@ -65,21 +65,21 @@
             <div class="col-sm-4 col">
                 <div class="form-group">
                     <label for="exampleInputEmail1">First Name</label>
-                    <span class="form-control" > {{faculty.firstname}} </span>
+                    <span class="form-control" > {{student.firstname}} </span>
                 </div> 
             </div>
 
             <div class="col-sm-4 col">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Middle Name</label>
-                    <span class="form-control" > {{faculty.middlename}} </span>
+                    <span class="form-control" > {{student.middlename}} </span>
                 </div> 
             </div>
 
             <div class="col-sm-4 col">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Last Name</label>
-                    <span class="form-control" > {{faculty.lastname}} </span>
+                    <span class="form-control" > {{student.lastname}} </span>
                 </div> 
             </div>
 
@@ -110,9 +110,9 @@
                 <button 
                     type    = "button" 
                     class   = "btn btn-lg btn-block"
-                    v-bind:class    = "{'btn-success' : (faculty.active == 1), 'btn-danger': (faculty.active != 1) }"
+                    v-bind:class    = "{'btn-success' : (student.active == 1), 'btn-danger': (student.active != 1) }"
                     @click  = "set_active()"
-                    >{{(faculty.active == 1) ? 'Active': 'Inactive'}}
+                    >{{(student.active == 1) ? 'Active': 'Inactive'}}
                 </button>
             </div>
             <div class="col-sm-4 col">
@@ -127,7 +127,7 @@
                 <button 
                     type="button" 
                     class="btn btn-info btn-lg btn-block"
-                    @click  = "toggle_mdl_editFaculty()"
+                    @click  = "toggle_mdl_editstudent()"
                     >EDIT
                 </button>
             </div>  
@@ -142,7 +142,7 @@
         <div class="row admin-row"> 
             <div class="col-sm-12 col">
                 <div class="panel panel-info">
-                    <div class="panel-heading">Handled Courses</div>
+                    <div class="panel-heading">Enrolled Courses</div>
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover">
@@ -153,7 +153,7 @@
                                             <th>Descriptitle</th>
                                             <th>Accesscode</th>
                                             <th>Schedule</th> 
-                                            <th>View</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -162,8 +162,7 @@
                                             <td>{{course.section}}</td>
                                             <td>{{course.descriptitle}}</td>
                                             <td>{{course.accesscode}}</td>
-                                            <td>{{course.schedule}}</td> 
-                                            <td><a href="">View</a></td>
+                                            <td>{{course.schedule}}</td>  
                                         </tr>
                                         <template v-if="!courses.length"> 
                                             <tr>
@@ -185,13 +184,13 @@
 
 <!-- =============== MODALS  -->
 
-<template v-if="mdl_editFaculty.toggled">  
+<template v-if="mdl_editstudent.toggled">  
     <div class="popup" tabindex="-1">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" @click="setDefaults_mdl_editFaculty()"><span>&times;</span></button>
-            <h4 class="modal-title">Edit  {{faculty.firstname}} {{faculty.middlename}} {{faculty.lastname}} </h4>
+            <button type="button" class="close" @click="setDefaults_mdl_editstudent()"><span>&times;</span></button>
+            <h4 class="modal-title">Edit  {{student.firstname}} {{student.middlename}} {{student.lastname}} </h4>
         </div>
         <div class="modal-body">  
 
@@ -200,7 +199,7 @@
             <div class="col-sm-4">
                 <div class="form-group"> 
                     <label class="control-label">ID:</label>
-                    <input type="text" class="form-control" v-model="mdl_editFaculty.id">
+                    <input type="text" class="form-control" v-model="mdl_editstudent.id">
                 </div>
             </div> 
         </div>
@@ -209,14 +208,14 @@
             <div class="col-sm-6">
                 <div class="form-group"> 
                     <label>Department</label>
-                    <input type="text" class="form-control" v-model="mdl_editFaculty.department">
+                    <input type="text" class="form-control" v-model="mdl_editstudent.department">
                 </div>
             </div> 
 
             <div class="col-sm-6">
                 <div class="form-group"> 
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" v-model="mdl_editFaculty.email">
+                    <input type="email" class="form-control" v-model="mdl_editstudent.email">
                 </div>
             </div> 
             
@@ -227,21 +226,21 @@
             <div class="col-sm-4">
                 <div class="form-group"> 
                     <label class="control-label">First Name</label>
-                    <input type="email" class="form-control" v-model="mdl_editFaculty.firstname">
+                    <input type="email" class="form-control" v-model="mdl_editstudent.firstname">
                 </div>
             </div>
 
             <div class="col-sm-4">
                 <div class="form-group"> 
                     <label for="email">Middle Name</label>
-                    <input type="email" class="form-control" v-model="mdl_editFaculty.middlename">
+                    <input type="email" class="form-control" v-model="mdl_editstudent.middlename">
                 </div>
             </div> 
 
             <div class="col-sm-4">
                 <div class="form-group"> 
                     <label for="email">Last Name</label>
-                    <input type="email" class="form-control" v-model="mdl_editFaculty.lastname">
+                    <input type="email" class="form-control" v-model="mdl_editstudent.lastname">
                 </div>
             </div> 
 
@@ -269,13 +268,13 @@
             <button 
                 type="button" 
                 class="btn btn-default btn-sm" 
-                @click="setDefaults_mdl_editFaculty()"
+                @click="setDefaults_mdl_editstudent()"
                 >Close
             </button>
             <button 
                 type="button" 
                 class="btn btn-primary btn-sm" 
-                @click="update_faculty()"
+                @click="update_student()"
                 >Update
             </button>
         </div>
@@ -284,7 +283,7 @@
         </div>
     </div>
 </template>
-<!-- /modal_edit_faculty  -->
+<!-- /modal_edit_student  -->
 
 <!-- modal updatepassword  -->
 <template v-if="mdl_editPass.toggled"> 
@@ -365,8 +364,7 @@
             </div> 
           <!-- /end add modal  --> 
     </template>
-    <!-- /update faculty modal  -->
-
+    <!-- /update student modal  --> 
 
 <!-- ======================================================================= /CONTENT  -->
 </div>
@@ -382,15 +380,15 @@
     var app = new Vue({
         el: "#content",
         data: {
-            faculty_id: searchParams.get('faculty'),
-            faculty: '', 
+            student_id: searchParams.get('student'),
+            student: '', 
             courses: '',
             alerts: {
                 'message': '',
                 'type'  : '',
                 'toggled': false 
             },  
-            mdl_editFaculty: {
+            mdl_editstudent: {
                 'toggled': false,
                 'id': '',
                 'department': '',
@@ -410,13 +408,13 @@
         methods: {
             // active {
                 set_active: function(){
-                    var status = (this.faculty.active == 1) ? '0': '1'; 
-                    axios.post("../../controller/admin/faculty.controller.php", {
+                    var status = (this.student.active == 1) ? '0': '1'; 
+                    axios.post("../../controller/admin/student.controller.php", {
                         action: 'set_active',
-                        usr_id:  this.faculty_id, 
+                        usr_id:  this.student_id, 
                         active:  status
                     }).then(function(response){ 
-                        app.faculty_details();
+                        app.student_details();
                     });
                 },
 
@@ -429,11 +427,11 @@
                     else if(this.mdl_editPass.newPassword != this.mdl_editPass.cNewPassword){
                         this.setAlerts("New Password and Confirm Password did not match", "error", true);
                     }else{  
-                        axios.post("../../controller/admin/faculty.controller.php", {
+                        axios.post("../../controller/admin/student.controller.php", {
                             action: 'update_password',
                             password:   this.mdl_editPass.password,
                             newPassword:    this.mdl_editPass.newPassword,
-                            faculty_id:     this.faculty.usr_id 
+                            student_id:     this.student.usr_id 
                         }).then(function(response){
                             if(response.data.success){
                                 app.setAlerts("Password Successfully Updated", "success", true);
@@ -457,29 +455,29 @@
                 },
             // }
 
-            //mdl_editFaculty{
-                setDefaults_mdl_editFaculty: function(){
-                    this.mdl_editFaculty.toggled = false;
-                    this.mdl_editFaculty.id = "";
-                    this.mdl_editFaculty.department ="";
-                    this.mdl_editFaculty.email = "";
-                    this.mdl_editFaculty.firstname = "";
-                    this.mdl_editFaculty.middlename = "";
-                    this.mdl_editFaculty.lastname = "";
+            //mdl_editstudent{
+                setDefaults_mdl_editstudent: function(){
+                    this.mdl_editstudent.toggled = false;
+                    this.mdl_editstudent.id = "";
+                    this.mdl_editstudent.department ="";
+                    this.mdl_editstudent.email = "";
+                    this.mdl_editstudent.firstname = "";
+                    this.mdl_editstudent.middlename = "";
+                    this.mdl_editstudent.lastname = "";
                 },
-                toggle_mdl_editFaculty: function (){
+                toggle_mdl_editstudent: function (){
                     this.setDefaults_alerts();
-                    this.mdl_editFaculty.toggled = true;
-                    this.mdl_editFaculty.id = this.faculty.std_id;
-                    this.mdl_editFaculty.department = this.faculty.department;
-                    this.mdl_editFaculty.email = this.faculty.email;
-                    this.mdl_editFaculty.firstname = this.faculty.firstname;
-                    this.mdl_editFaculty.middlename = this.faculty.middlename;
-                    this.mdl_editFaculty.lastname = this.faculty.lastname;
+                    this.mdl_editstudent.toggled = true;
+                    this.mdl_editstudent.id = this.student.std_id;
+                    this.mdl_editstudent.department = this.student.department;
+                    this.mdl_editstudent.email = this.student.email;
+                    this.mdl_editstudent.firstname = this.student.firstname;
+                    this.mdl_editstudent.middlename = this.student.middlename;
+                    this.mdl_editstudent.lastname = this.student.lastname;
                     
                 },
                
-            // } mdl_editFaculty
+            // } mdl_editstudent
 
             // alerts{
                 setAlerts: function(message, type, toggled){
@@ -494,60 +492,61 @@
                 },
             // } end of alerts 
 
-            // faculty {
-                faculty_details: function (){
-                    axios.post("../../controller/admin/faculty.controller.php", {
-                        action: 'faculty_details',
-                        usr_id: this.faculty_id
+            // student {
+                student_details: function (){
+                    axios.post("../../controller/admin/student.controller.php", {
+                        action: 'student_details',
+                        usr_id: this.student_id
                     }).then(function(response){
-                        app.faculty = response.data;
+                        app.student = response.data; 
                     });
                 },
-                faculty_courses: function(){
-                    axios.post("../../controller/admin/faculty.controller.php", {
-                        action: 'faculty_courses',
-                        usr_id: this.faculty_id
+                student_courses: function(){
+                    axios.post("../../controller/admin/student.controller.php", {
+                        action: 'student_courses',
+                        usr_id: this.student_id
                     }).then(function(response){
                         app.courses = response.data;
+                        // alert(response.data)  
                     });
                 },
-                update_faculty: function(){
+                update_student: function(){
                     var mailformat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-                    if(this.mdl_editFaculty.email == '' || this.mdl_editFaculty.firstname == '' || this.mdl_editFaculty.lastname == ''){
+                    if(this.mdl_editstudent.email == '' || this.mdl_editstudent.firstname == '' || this.mdl_editstudent.lastname == ''){
                         this.setAlerts("Email, Firstname, Lastname cannot be empty.", "error", true);
                     }
-                    else if(!this.mdl_editFaculty.email.match(mailformat)){
+                    else if(!this.mdl_editstudent.email.match(mailformat)){
                         this.setAlerts("Please input a valid email address.", "error", true);
                     }
                     else{  
-                        axios.post("../../controller/admin/faculty.controller.php", {
-                            action:     'update_faculty', 
-                            std_id:     this.mdl_editFaculty.id,
-                            department: this.mdl_editFaculty.department,
-                            email:      this.mdl_editFaculty.email,
-                            firstname:  this.mdl_editFaculty.firstname,
-                            middlename: this.mdl_editFaculty.middlename,
-                            lastname:   this.mdl_editFaculty.lastname,
-                            usr_id:     this.faculty_id
+                        axios.post("../../controller/admin/student.controller.php", {
+                            action:     'update_student', 
+                            std_id:     this.mdl_editstudent.id,
+                            department: this.mdl_editstudent.department,
+                            email:      this.mdl_editstudent.email,
+                            firstname:  this.mdl_editstudent.firstname,
+                            middlename: this.mdl_editstudent.middlename,
+                            lastname:   this.mdl_editstudent.lastname,
+                            usr_id:     this.student_id
                     
                         }).then(function(response){
                             if(response.data.success){  
-                                app.faculty_details();
-                                app.setDefaults_mdl_editFaculty();
+                                app.student_details();
+                                app.setDefaults_mdl_editstudent();
                                 app.setAlerts("Account Successfully Updated", "success", true);
                                
                             }else{
-                                app.setAlerts("Something went wrong. Faculty ID or Email may already be existed", "error", true);
+                                app.setAlerts("Something went wrong. student ID or Email may already be existed", "error", true);
                             } 
                         }); 
                     }
                 },
-            // } end of faculty
+            // } end of student
 
         },
         created: function(){
-            this.faculty_details();
-            this.faculty_courses();
+            this.student_details();
+            this.student_courses();
         }
     });
 </script>

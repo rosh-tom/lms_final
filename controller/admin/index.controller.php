@@ -21,6 +21,7 @@
             :usr_id, :std_id, :firstname, :middlename, :lastname, :email, :pass, :profilepic, :department, :types
         )";
         $result = DB::query($result, $data);
+        mkdir("../../uploads/profiles/".$data['usr_id']);
         unset($data);
         if($result){ 
             $data = [

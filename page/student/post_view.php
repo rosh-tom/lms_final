@@ -38,7 +38,7 @@
                 <div class="panel panel-default"> 
                     <div class="panel-heading">
                             <p class="paragraph">
-                                <img class="pp" src="../../<?= $post_facultyInfo['profilepic'] ?>" style="width: 35px;  margin-top: 10px !important;">
+                                <img class="pp" src="../../<?= $post_facultyInfo['profilepic'] ?>" style="width: 35px; height: 35px;  margin-top: 10px !important;">
                                 <span style="font-weight: bold; font-size: 15px;"><?= $post_facultyInfo['firstname'] ?> <?= $post_facultyInfo['lastname']?></span>
                                 <img src="../../icons/right-arrow.svg" style="width: 15px;">
                                 <?= $course_info['descriptitle'] ?> | <?= $course_info['num'] ?>
@@ -62,7 +62,7 @@
                             </video>
 <?php } ?>
                             </center> 
-                            <a target="_blank"  href="../../<?= $post_info['locale'] ?>" class="btn btn-default btn-sm" style="margin-top: 10px;">download</a>
+                            <a href="../../<?= $post_info['locale'] ?>" class="btn btn-default btn-sm" style="margin-top: 10px;">download</a>
  
                     </div>
                     <div class="panel-body">

@@ -64,6 +64,7 @@
                     </div>
 
                     <div class="col-sm-6"  style="position: static">
+                        <button class="btn btn-warning" name="cancel">Cancel</button>
                         <button class="btn btn-info" name="search">Search</button>
                     </div>
 
@@ -226,8 +227,7 @@
                           <div class="form-group"> 
                             <label for="email">User Type</label>
                             <select class="form-control" v-model="type">
-                              <option>Faculty</option>
-                              <option>Student</option>
+                              <option>Faculty</option> 
                             </select> 
                           </div>
                         </div> 

@@ -1,4 +1,16 @@
-<?php include '../_includes/header.php'; ?>  
+<?php include '../_includes/header.php'; 
+
+    $faculty = "SELECT * FROM tbl_user WHERE types='Faculty'";
+    $faculty = DB::query($faculty); 
+    $number_of_faculty = count($faculty);
+
+    $student = "SELECT * FROM tbl_user WHERE types='Student'";
+    $student = DB::query($student);
+    $number_of_student = count($student);
+
+
+?>  
+
 <title>Narrow Jumbotron Template for Bootstrap</title> 
 </head>
 
@@ -13,9 +25,9 @@
           <div class="well">
           <img src="../../icons/avatar_faculty.svg" style="width: 100px; height: 100px !important;">
           <h2>Faculty</h2> 
-          <p class="lead"><span class="label label-default">56</span></p>
+          <p class="lead"><span class="label label-default"><?= $number_of_faculty ?></span></p>
           
-          <p><a class="btn btn-lg btn-success" href="#" role="button">View Faculties</a></p>
+          <p><a class="btn btn-lg btn-success" href="faculty.php" role="button">View Faculties</a></p>
           </div>
         </div>
 
@@ -23,8 +35,8 @@
         <div class="well">
           <img src="../../icons/student.svg" style="width: 100px; height: 100px !important;">
           <h2>Student</h2> 
-          <p class="lead"><span class="label label-default">100</span></p>
-          <p><a class="btn btn-lg btn-success" href="#" role="button">View Students</a></p>
+          <p class="lead"><span class="label label-default"><?= $number_of_student ?></span></p>
+          <p><a class="btn btn-lg btn-success" href="student.php" role="button">View Students</a></p>
           </div>
         </div> 
       </div>
@@ -33,7 +45,7 @@
 
       <div class="row">
         <div class="col-lg-12" style="position: static">
-          <h3>Updates / Announcement</h3>
+            <h3 class="sub-header">Announcement <button class="btn btn-primary">Add</button></h3>
       </div> 
     </div> <!-- /container -->
  

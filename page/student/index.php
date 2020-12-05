@@ -52,7 +52,7 @@
     $faculty = DB::query($faculty, array(':faculty_id' => $getFaculty['usr_id']))[0]; 
 ?>
                                 <center> 
-                                    <img src='../../<?= $faculty['profilepic'] ?>' style='width: 45px' class="pp">
+                                    <img src='../../<?= $faculty['profilepic'] ?>' style='width: 45px; height: 45px;' class="pp">
                                     <p class='paragraph'><?= $faculty['firstname'] ?> <?= $faculty['lastname'] ?></p>
                                     <h4 style="margin: 0px"><?= $studentCourse['descriptitle'] ?></h4> 
                                     <p class="paragraph"><?= $studentCourse['num'] ?></p>
