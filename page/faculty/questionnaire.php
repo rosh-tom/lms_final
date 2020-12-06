@@ -242,14 +242,21 @@
                 'qstnnr_id': '',
                 'expiration': '',
                 'timer': ''
-            }
+            },
+            temp: ''
         },
         methods: {
             formatDateTime: function(date){
                 if(date == ''){
                     return;
                 }
+                var now = new Date(); 
+
                 var date = new Date(date);
+                if(date <= now){
+                    alert("Hello world");
+                }
+
                 var hours = date.getHours();
                 var minutes = date.getMinutes();
                 var ampm = hours >= 12 ? 'pm' : 'am';
@@ -409,8 +416,10 @@
                         action: 'getnumQuestion', 
                         qstnnr_id: id
                     }).then(function(response){
-                       alert("Question Created: "+ response.data );
+                    alert("Question Created: "+ response.data );
+                   
                     });
+                 
             }
 
         },
