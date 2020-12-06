@@ -76,6 +76,8 @@
                     <p class="paragraph">Instruction: {{qstnnr.descript}}</p>
                     <p class="paragraph">Type: &emsp; &emsp; {{qstnnr.types}}</p>
                     <p class="paragraph">Items: &emsp; &emsp;<a class="numberOfQuestion" @click="numberOfQuestion(qstnnr.qstnnr_id)">show created</a> / {{qstnnr.items}} Items </p>
+                    <p class="paragraph">Expiration: &nbsp; {{formatDateTime(qstnnr.expiration)}}</p> 
+                    <p class="paragraph">Timer: &emsp; &emsp;{{qstnnr.timer}} (Minutes)</p>
                     <p class="paragraph">
                         Status:&emsp; &emsp;<span v-bind:class = "{'text-danger' : (qstnnr.status == 'inactive'), 'text-success': (qstnnr.status == 'active')}">{{qstnnr.status}}</span>  
                     </p> 
@@ -149,7 +151,42 @@
                     <input type="number" class="form-control" v-model="modal_qstnnr.items">
                 </div> 
             </div> 
+ 
+                    <div class="col-sm-6">
+                        <div class="form-group"> 
+                            <label>Set Expiration: </label> 
+                             <input class="form-control" type="datetime-local" v-model="modal_qstnnr.expiration">
+                        </div> 
+                    </div>  
+                    <div class="col-sm-6">
+                        <div class="form-group"> 
+                            <label>Set Timer (Minutes): </label> 
+                             <input class="form-control" type="number" v-model="modal_qstnnr.timer">
+                        </div> 
+                    </div> 
+             
+
+
         </div>
+        <!-- /row  -->
+
+        
+<template v-if="alerts.toggled">
+    <div class="row">
+        <div class="col-sm-12">
+            <div 
+                class="alert"
+                v-bind:class="{'alert-danger': (alerts.type == 'error'), 'alert-success': (alerts.type == 'success')}"
+                >
+                <a class="close" @click="alerts.toggled=false">&times;</a>
+                <strong>{{(alerts.type == 'success')? 'Success: ': 'Error: '}} </strong> {{ alerts.message }}
+            </div>
+        </div> 
+    </div>
+    <!-- /.row  --> 
+</template> 
+
+
         
         <!-- /. modal body  -->
         <div class="modal-footer">
@@ -202,10 +239,28 @@
                 'types': 'Multiple Choice',
                 'items': '',
                 'mode': 'add',
-                'qstnnr_id': ''
+                'qstnnr_id': '',
+                'expiration': '',
+                'timer': ''
             }
         },
         methods: {
+            formatDateTime: function(date){
+                if(date == ''){
+                    return;
+                }
+                var date = new Date(date);
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+ 
+                
+            },
             setDefault_modal_qsttnr: function(){
                 this.modal_qstnnr.toggled = false;
                 this.modal_qstnnr.title = '';
@@ -214,6 +269,8 @@
                 this.modal_qstnnr.items = '';
                 this.modal_qstnnr.mode = 'add';
                 this.modal_qstnnr.qstnnr_id = '';
+                this.modal_qstnnr.expiration = '';
+                this.modal_qstnnr.timer = '';
             },
             setDefault_drpdwn: function (){
                 this.toggled = false;
@@ -239,14 +296,16 @@
 
             save_qstnnr: function (){
                 if(this.modal_qstnnr.title == '' || this.modal_qstnnr.description == '' || this.modal_qstnnr.types == '' || this.modal_qstnnr.items == ''){
-                    alert("Please fill up the form");
-                }else{
+                    this.setAlerts("Please Fill up the important fields", "error", true);
+                }else{  
                         axios.post("../../controller/faculty/questionniare.controller.php", {
                             action: 'save_qstnnr',
                             title: this.modal_qstnnr.title,
                             description: this.modal_qstnnr.description,
                             types: this.modal_qstnnr.types,
                             items: this.modal_qstnnr.items,
+                            expiration: this.modal_qstnnr.expiration,
+                            timer: this.modal_qstnnr.timer,
                             crs_id: this.crs_id
                         }).then(function(response){
                             if(response.data.success){
@@ -254,7 +313,7 @@
                                 app.setDefault_modal_qsttnr(); 
                                 app.setAlerts("Questionnaire successfully Created!. ", "success", true);
                             }else{
-                                app.setAlerts("An error occur while creating Questionnaire. Please try again later. ", "danger", true);
+                                app.setAlerts("An error occur while creating Questionnaire. Please try again later. ", "error", true);
                             }
                         });
                 }
@@ -300,6 +359,8 @@
                         app.modal_qstnnr.title = response.data.title;
                         app.modal_qstnnr.description = response.data.descript;
                         app.modal_qstnnr.items = response.data.items;
+                        app.modal_qstnnr.expiration = response.data.expiration;
+                        app.modal_qstnnr.timer = response.data.timer
                     });
             },
             update_qstnnr: function (){

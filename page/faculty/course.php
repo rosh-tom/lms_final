@@ -8,10 +8,8 @@
     $user_info = "SELECT * FROM tbl_user where usr_id=:usr_id";
     $user_info = DB::query($user_info, array(':usr_id'=>$_SESSION['loggedID']))[0]; 
 
-?> 
- 
-<!-- / php  -->
- 
+?>  
+
 <div class="container">
     <?php include '../_includes/navigation.php'; ?>
 
@@ -44,9 +42,7 @@
             </div> 
         </div>
         <!-- /.row  --> 
-    </template>  
-
-
+    </template>   
 
 <template v-for="course in courses">
     <div class="row"> 
@@ -81,18 +77,13 @@
     </div>
 <!-- /.row  --> 
 </template>
+
 <template v-if="noCourse">  
 <center>
     <h1> No Course Yet. </h1>
 </center>
-</template>
+</template>  
 
-
-
-
-<!-- modal  -->
-<!-- <form action="controller/course.controller.php" method="post">  -->
- 
 <template v-if="modal_addCourse"> 
             <div class="popup" tabindex="-1">
               <div class="modal-dialog">
@@ -153,9 +144,8 @@
                                             class="form-control" 
                                             v-model="start_time" 
                                             >
-                                    </div>
-                                   
-                                      
+                                    </div>  
+                                    
                                     <div class="col-sm-6">  
                                         <input 
                                             type="time" 
@@ -300,5 +290,6 @@
 <!-- /.container  -->   
 
 <script src="vue/course.js"> 
+
 </script> 
 <?php include '../_includes/footer.php'; ?>

@@ -12,12 +12,14 @@ if($received_data->action == 'save_qstnnr'){
         'descript'  => $received_data->description,
         'types'     => $received_data->types,
         'items'     => $received_data->items,
+        'expiration'=> $received_data->expiration,
+        'timer'     => $received_data->timer,
         'usr_id'    => $_SESSION['loggedID'],
         'crs_id'    => $received_data->crs_id
     ];
 
-    $saveQstnnr = "INSERT INTO tbl_questionnaire (qstnnr_id, title, descript, types, items, usr_id, crs_id) VALUES(
-        :qstnnr_id, :title, :descript, :types, :items, :usr_id, :crs_id
+    $saveQstnnr = "INSERT INTO tbl_questionnaire (qstnnr_id, title, descript, types, items, expiration, timer, usr_id, crs_id) VALUES(
+        :qstnnr_id, :title, :descript, :types, :items, :expiration, :timer, :usr_id, :crs_id
     )";
     $saveQstnnr = DB::query($saveQstnnr, $data);
         

@@ -17,7 +17,7 @@ if($received_data->action =='btn_upAcc'){
     $updateAccount = DB::query($updateAccount, $data);
     unset($data);
     if($updateAccount){
-        $data['success']    = true;
+        $data['success']    = true; 
         $data['message'] = "Account Successfully Updated. "; 
     }else{
         $data['success']    = false; 
