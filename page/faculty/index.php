@@ -38,6 +38,53 @@
             </div>
         </div>
     </div>
+
+    <hr>
+ 
+        <div class="row">
+            <div class="col-sm-12">
+                <center> 
+                    <h4>Announcement</h4>
+                </center>
+            </div>
+        </div>
+
+        <?php 
+            $announcement = "SELECT * FROM tbl_announcement WHERE audience='Faculty' || audience='Students and Faculties'";
+            $announcement = DB::query($announcement);
+
+            foreach($announcement as $post){ 
+        ?>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default" style="margin-right: 50px; margin-left: 50px;">  
+                    <div class="panel-heading">
+                        <label for=""> <?= $post['title'] ?> </label>
+                    </div>
+                    <div class="panel-body">
+                        <?= $post['announcement'] ?>
+                        <br>
+                        <center>
+                            <?php if($post['filetype'] == 'image'){ ?>
+                                    <img src="../../<?= $post['uploaded'] ?>" alt="" style="height: 200px;">
+                            <?php }
+                                elseif($post['filetype'] == 'application' || $post['filetype'] == 'text'){ 
+                            ?>
+                                    <br>
+                                    <img src="../../icons/document.svg" alt="" style="height: 50px;">
+                                    <br>
+                                    <a href="../../icons/document.svg">download</a>
+                            <?php } ?>
+                        </center> 
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <?php 
+            }
+        ?>
+
 <!-- /.row  -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  --> 
     

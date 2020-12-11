@@ -13,6 +13,7 @@ $result = "create table ". $tablename ." (
     items int(11),
     expiration varchar(255),
     timer int(11),
+    answerkey varchar(1) default '0',
     status varchar(100) default 'inactive',
     usr_id varchar(255) not null,
     crs_id varchar(255) not null, 

@@ -195,7 +195,9 @@ top: 0;
 .margin-b-20{
   margin-bottom: 20px;
 }
-
+.text-bold{
+  font-weight: bold !important;
+}
 
 
 /* ====================================================================================== Questionnaire  */
@@ -228,7 +230,7 @@ top: 0;
 .hover-danger:hover{
   color: #a94442;
 }
-
+ 
 /* ==================================================================================================== Student Index  */
 .p-error{
   margin-top: 5px;

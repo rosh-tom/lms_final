@@ -10,6 +10,18 @@
             <li>
             <?= ($uri_segments[4] == 'forum.php')? "Forums" : "<a href='forum.php?course=". $_GET['course'] ."'> Forums </a>"?> 
             </li>
+
+            <?php if($_SESSION['loggedType'] == "Faculty"){ ?>
+                <li>
+                    <?= ($uri_segments[4] == 'student.php')? "Students" : "<a href='student.php?course=". $_GET['course'] ."'> Students </a>"?> 
+                </li>
+            <?php } else {  ?>  
+                <li>
+                    <?= ($uri_segments[4] == 'classmate.php')? "Classmates" : "<a href='classmate.php?course=". $_GET['course'] ."'> Classmates </a>"?> 
+                </li> 
+            <?php } ?>
+
+           
 <?php 
     if($_SESSION['loggedID'] == 'Faculty'){
 ?>

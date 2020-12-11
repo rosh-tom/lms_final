@@ -81,10 +81,11 @@ elseif($received_data->action == 'submitQuestionnaire'){
     if($checkAnswer < $checkItems){
         $success = false;
     }else{ 
-        $saveScore = "INSERT INTO tbl_score (score, usr_id, qstnnr_id, crs_id) VALUES(
-            :score, :usr_id, :qstnnr_id, :crs_id
+        $saveScore = "INSERT INTO tbl_score (src_id, score, usr_id, qstnnr_id, crs_id) VALUES(
+            :scr_id, :score, :usr_id, :qstnnr_id, :crs_id
         )";
         $saveScoreData = [
+            'scr_id'    => uniqid(),
             'score'     => $score,
             'usr_id'    => $data['usr_id'], 
             'qstnnr_id' => $data['qstnnr_id'], 

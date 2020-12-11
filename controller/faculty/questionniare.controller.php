@@ -85,10 +85,12 @@ elseif($received_data->action == 'update_qstnnr'){
         'descript'  => $received_data->description,
         'types'     => $received_data->types,
         'items'     => $received_data->items,
+        'expiration'=> $received_data->expiration,
+        'timer'     => $received_data->timer,
         'qstnnr_id' => $received_data->qstnnr_id
     ];
 
-    $saveQstnnr = "UPDATE tbl_questionnaire SET title=:title, descript=:descript, types=:types, items=:items WHERE qstnnr_id=:qstnnr_id";
+    $saveQstnnr = "UPDATE tbl_questionnaire SET title=:title, descript=:descript, types=:types, items=:items, expiration=:expiration, timer=:timer WHERE qstnnr_id=:qstnnr_id";
     $saveQstnnr = DB::query($saveQstnnr, $data);
         
     unset($data);
@@ -120,5 +122,26 @@ elseif($received_data->action == 'updateStatus'){
     }
 
 echo json_encode($data);
+}
+elseif($received_data->action == 'answerkey'){
+    $data = [
+        'qstnnr_id' => $received_data->qstnnr_id
+    ];
+    $getAnswerkey = "SELECT answerkey FROM tbl_questionnaire WHERE qstnnr_id=:qstnnr_id";
+    $getAnswerkey = DB::query($getAnswerkey, $data)[0];
+
+    $newAnswerkey = ($getAnswerkey['answerkey'] == '0') ? '1' : '0';
+
+    $updateStatus = "UPDATE tbl_questionnaire SET answerkey=:answerkey WHERE qstnnr_id=:qstnnr_id";
+    $updateStatus = DB::query($updateStatus, array(':answerkey'=>$newAnswerkey, ':qstnnr_id'=>$data['qstnnr_id']));
+
+    unset($data);
+    if($updateStatus){
+        $data['success'] = true;
+    }else{
+        $data['success'] = false;
+    }
+
+    echo json_encode($data);
 }
 ?>

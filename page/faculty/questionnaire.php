@@ -76,17 +76,33 @@
                     <p class="paragraph">Instruction: {{qstnnr.descript}}</p>
                     <p class="paragraph">Type: &emsp; &emsp; {{qstnnr.types}}</p>
                     <p class="paragraph">Items: &emsp; &emsp;<a class="numberOfQuestion" @click="numberOfQuestion(qstnnr.qstnnr_id)">show created</a> / {{qstnnr.items}} Items </p>
-                    <p class="paragraph">Expiration: &nbsp; {{formatDateTime(qstnnr.expiration)}}</p> 
+                    <p class="paragraph"
+                        v-bind:class="[validateExpiration(qstnnr.expiration) ? 'text-danger' : 'text-success']"
+                        >Expiration: 
+                        &nbsp; {{formatDateTime(qstnnr.expiration)}} 
+                        {{(validateExpiration(qstnnr.expiration)) ? "(Expired)" : ''}}
+                        <template v-if="validateExpiration(qstnnr.expiration)">
+                            <button 
+                                class="btn btn-sm" 
+                                v-bind:class="[(qstnnr.answerkey == 0) ? 'btn-danger': 'btn-success']"
+                                @click="answerkey(qstnnr.qstnnr_id)"
+                                >{{(qstnnr.answerkey == 0) ? 'Show Answer Key': 'Hide Answer Key'}}
+                            </button>
+                        </template>
+                    </p> 
                     <p class="paragraph">Timer: &emsp; &emsp;{{qstnnr.timer}} (Minutes)</p>
                     <p class="paragraph">
                         Status:&emsp; &emsp;<span v-bind:class = "{'text-danger' : (qstnnr.status == 'inactive'), 'text-success': (qstnnr.status == 'active')}">{{qstnnr.status}}</span>  
                     </p> 
+                    <hr style="margin-top: 2px; margin-bottom: 5px;">
+                    
                     <button 
                         class="btn btn-sm"
                         v-bind:class = "{'btn-danger' : (qstnnr.status == 'inactive'), 'btn-success': (qstnnr.status == 'active')}"
                         @click="updateStatus(qstnnr.qstnnr_id)"
                         >{{(qstnnr.status == 'inactive')? 'Activate': 'Deactivate'}}
                     </button>
+                    <a :href="'score.php?questionnaire='+ qstnnr.qstnnr_id +'&&course='+ crs_id" class="btn btn-info btn-sm">Students Score</a>
                 </div>  
         </div>
     </div>
@@ -222,6 +238,9 @@
             crs_id: searchParams.get('course'),
             questionnaires: '', 
             num: '',
+            expired: { 
+                'message': false
+            },
             alerts: {
                 'message': '',
                 'type'  : '',
@@ -243,19 +262,41 @@
                 'expiration': '',
                 'timer': ''
             },
-            temp: ''
+            
+             
         },
         methods: {
+            answerkey: function (id){
+                axios.post("../../controller/faculty/questionniare.controller.php", {
+                    action: 'answerkey', 
+                    qstnnr_id: id
+                }).then(function(response){
+                    if(response.data.success){
+                        app.fetchAllQstnnr();
+                        app.setDefault_modal_qsttnr();  
+                    }else{
+                        app.setAlerts("An error occur. Please try again later. ", "danger", true); 
+                    } 
+                });
+            },
+            validateExpiration: function(date){
+                if(date == ''){
+                    return;
+                }
+                var currentDate = new Date();  
+                var date = new Date(date);
+                if(currentDate > date){
+                    return true;
+                }
+              
+            },
             formatDateTime: function(date){
                 if(date == ''){
                     return;
                 }
-                var now = new Date(); 
 
                 var date = new Date(date);
-                if(date <= now){
-                    alert("Hello world");
-                }
+              
 
                 var hours = date.getHours();
                 var minutes = date.getMinutes();
@@ -353,6 +394,7 @@
             }, 
 
             toggle_editQstnnr: function (id){  
+                this.setAlerts("", "", false);
                 this.toggle_drpdwn(id); 
                 this.modal_qstnnr.mode = 'edit';
                 this.modal_qstnnr.toggled = true;  
@@ -380,6 +422,8 @@
                             description: this.modal_qstnnr.description,
                             types: this.modal_qstnnr.types,
                             items: this.modal_qstnnr.items,
+                            expiration: this.modal_qstnnr.expiration,
+                            timer: this.modal_qstnnr.timer,
                             qstnnr_id: this.modal_qstnnr.qstnnr_id
                         }).then(function(response){
                             if(response.data.success){

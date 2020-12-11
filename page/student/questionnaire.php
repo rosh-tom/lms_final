@@ -1,7 +1,8 @@
 <?php include '../_includes/header.php'; ?>
 <?php 
+    $crs_id = $_GET['course'];
     $course_info = "SELECT * FROM tbl_course WHERE crs_id=:crs_id";
-    $course_info = DB::query($course_info, array(':crs_id'=>$_GET['course']))[0]; 
+    $course_info = DB::query($course_info, array(':crs_id'=>$crs_id ))[0]; 
 
 
     if(count($course_info) == 0){
@@ -49,14 +50,30 @@
 ?> 
     <div class="row">
             <div class="col-sm-12">
-                <div class="panel panel-default"> 
+                <div class="panel"
+                    v-bind:class="[validateExpiration('<?= $questionnaire['expiration'] ?>') ? 'panel-danger': 'panel-default']"
+                    > 
                     <div class="panel-heading">  
-                        <p style="margin-bottom: -5px; "> <span class="qstnnr_title"><?= $questionnaire['title']?></p> 
+                        <p style="margin-bottom: -5px; "> 
+                        <span class="qstnnr_title">
+                            <?= $questionnaire['title']?>
+                         {{validateExpiration('<?= $questionnaire['expiration'] ?>') ? ' (Expired)': ''}} 
+                        </span>
+                    </p> 
+
                     </div> 
 
                     <div class="panel-body"> 
-                        <p> - <?= $questionnaire['descript']?></p>
-                        <p> - <?= $questionnaire['types']?></p> 
+                        <p class="paragraph"> Description&emsp;- &emsp; <?= $questionnaire['descript']?></p>
+                        <p class="paragraph"> Type &emsp;&emsp;&emsp; &nbsp;- &emsp; <?= $questionnaire['types']?></p> 
+                        <p class="paragraph"
+                        v-bind:class="[validateExpiration('<?= $questionnaire['expiration'] ?>') ? 'text-danger': '']"
+                            > Due Date &emsp; &nbsp;- &emsp; {{format_date('<?= $questionnaire['expiration'] ?>')}}
+                            
+                        </p>
+                        <?php if($questionnaire['answerkey'] == '1'){ ?>
+                        <a href="answerkey.php?questionnaire=<?= $questionnaire['qstnnr_id'] ?>&&course=<?= $crs_id ?>" class="btn btn-info btn-sm">Answer Key</a>
+                        <?php } ?>
                     </div>
 <?php 
     $studentProgress = "SELECT * FROM tbl_answer WHERE qstnnr_id = :qstnnr_id and usr_id=:usr_id";
@@ -85,7 +102,7 @@
                             </a>
         <?php } ?>
                         <span style="margin-left: 20px;">Progress: <?= $studentProgress ?> / <?= $questionItems ?> items</span>
-                        <span style="float: right; margin-top: 5px;"><?= $questionnaire['created_at'] ?></span>
+                        <span style="float: right; margin-top: 5px;">{{format_date('<?= $questionnaire['created_at'] ?>')}}</span>
                     </div>  
                 </div>  
             </div>
@@ -113,7 +130,35 @@
                 }).then(function(response){
                     alert(response.data);
                 });
-            }
+            },
+            //date 
+            format_date: function (date){
+                if(date == ''){
+                    return;
+                }
+
+                var date = new Date(date); 
+
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+            },
+            validateExpiration: function(date){
+                if(date == ''){
+                    return;
+                }
+                var currentDate = new Date();  
+                var date = new Date(date);
+                if(currentDate > date){
+                    return true;
+                }
+              
+            },
           }
       });
   
