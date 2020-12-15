@@ -167,7 +167,9 @@
                         window.location.replace("questionnaire.php?course=<?= $_GET['course'] ?>");
                     }
                 });
-            }
+            },
+           
+
        }
     });
  
