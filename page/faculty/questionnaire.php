@@ -81,14 +81,20 @@
                         >Expiration: 
                         &nbsp; {{formatDateTime(qstnnr.expiration)}} 
                         {{(validateExpiration(qstnnr.expiration)) ? "(Expired)" : ''}}
-                        <template v-if="validateExpiration(qstnnr.expiration)">
+                        <!-- <template v-if="validateExpiration(qstnnr.expiration)">
                             <button 
                                 class="btn btn-sm" 
                                 v-bind:class="[(qstnnr.answerkey == 0) ? 'btn-danger': 'btn-success']"
                                 @click="answerkey(qstnnr.qstnnr_id)"
                                 >{{(qstnnr.answerkey == 0) ? 'Show Answer Key': 'Hide Answer Key'}}
                             </button>
-                        </template>
+                        </template> -->
+                        <button 
+                            class="btn btn-sm" 
+                            v-bind:class="[(qstnnr.answerkey == 0) ? 'btn-danger': 'btn-success']"
+                            @click="answerkey(qstnnr.qstnnr_id)"
+                            >{{(qstnnr.answerkey == 0) ? 'Show Answer Key': 'Hide Answer Key'}}
+                        </button>
                     </p> 
                     <p class="paragraph">Timer: &emsp; &emsp;{{qstnnr.timer}} (Minutes)</p>
                     <p class="paragraph">

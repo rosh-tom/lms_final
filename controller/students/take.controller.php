@@ -72,16 +72,16 @@ elseif($received_data->action == 'submitQuestionnaire'){
     $score = count($score);
      
 
-    $checkItems = "SELECT qstn_id FROM tbl_question WHERE qstnnr_id=:qstnnr_id";
-    $checkItems = DB::query($checkItems, array(':qstnnr_id'=>$data['qstnnr_id']));
+    // $checkItems = "SELECT qstn_id FROM tbl_question WHERE qstnnr_id=:qstnnr_id";
+    // $checkItems = DB::query($checkItems, array(':qstnnr_id'=>$data['qstnnr_id']));
 
-    $checkAnswer = "SELECT ans_id FROM tbl_answer WHERE usr_id=:usr_id and qstnnr_id=:qstnnr_id";
-    $checkAnswer = DB::query($checkAnswer, array(':usr_id'=>$data['usr_id'], 'qstnnr_id'=>$data['qstnnr_id']));
+    // $checkAnswer = "SELECT ans_id FROM tbl_answer WHERE usr_id=:usr_id and qstnnr_id=:qstnnr_id";
+    // $checkAnswer = DB::query($checkAnswer, array(':usr_id'=>$data['usr_id'], 'qstnnr_id'=>$data['qstnnr_id']));
 
-    if($checkAnswer < $checkItems){
-        $success = false;
-    }else{ 
-        $saveScore = "INSERT INTO tbl_score (src_id, score, usr_id, qstnnr_id, crs_id) VALUES(
+    // if($checkAnswer < $checkItems){
+    //     $success = false;
+    // }else{ 
+        $saveScore = "INSERT INTO tbl_score (scr_id, score, usr_id, qstnnr_id, crs_id) VALUES(
             :scr_id, :score, :usr_id, :qstnnr_id, :crs_id
         )";
         $saveScoreData = [
@@ -92,10 +92,39 @@ elseif($received_data->action == 'submitQuestionnaire'){
             'crs_id'    => $data['crs_id']
         ];
         DB::query($saveScore, $saveScoreData); 
-        $success = true;
-    }  
+    //     $success = true;
+    // // }  
 
-    echo json_encode($success);
+    // echo json_encode($success);
+}
+elseif($received_data->action == 'getTimer'){
+    $data = [
+        'timer_date' => $received_data->timer,
+        'qstnnr_id' => $received_data->qstnnr_id,
+        'stud_id'    => $_SESSION['loggedID'],
+        'active'    => '1'
+    ];
+
+    $checkIfExist = "SELECT * FROM tbl_timer WHERE qstnnr_id=:qstnnr_id and stud_id=:stud_id";
+    $checkIfExist_data = [
+        'qstnnr_id'  => $data['qstnnr_id'],
+        'stud_id'  => $data['stud_id']
+    ]; 
+    $checkIfExist = DB::query($checkIfExist, $checkIfExist_data);
+
+
+    if(! (count($checkIfExist) > 0) ){ 
+        $data['timer_date'] =  $received_data->timer;
+        $data['active'] = '1';
+        $insertTimer = "INSERT INTO tbl_timer (timer_date, qstnnr_id, stud_id, active) VALUES (:timer_date, :qstnnr_id, :stud_id, :active)";
+        $insertTimer = DB::query($insertTimer, $data);  
+        echo json_encode($data['timer_date']);
+    } else{
+         echo json_encode($checkIfExist[0]['timer_date']);
+    }
+
+
+
 }
  
 

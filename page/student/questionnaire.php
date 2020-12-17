@@ -11,7 +11,7 @@
 
     $user_info = "SELECT * FROM tbl_user WHERE usr_id=:usr_id";
     $user_info = DB::query($user_info, array(':usr_id'=>$_SESSION['loggedID']))[0]; 
- 
+   
 ?> 
 
 <title>Questionnaire - <?= $course_info['descriptitle'] ?> | SDSSU LMS</title> 
@@ -47,6 +47,14 @@
         echo "No Questionnaire Available";
     }else{ 
         foreach($questionnaires as $questionnaire){ 
+
+            // $check_if_timer_started = "SELECT * FROM tbl_timer WHERE stud_id=:stud_id and qstnnr_id=:qstnnr_id";
+            // $check_if_timer_started_data = [
+            //     'stud_id'  => $_SESSION['loggedID'],
+            //     'qstnnr_id'  => $questionnaire['qstnnr_id']
+            // ];
+            // $check_if_timer_started = DB::query($check_if_timer_started, $check_if_timer_started_data);
+         
 ?> 
     <div class="row">
             <div class="col-sm-12">
@@ -68,8 +76,10 @@
                         <p class="paragraph"> Type &emsp;&emsp;&emsp; &nbsp;- &emsp; <?= $questionnaire['types']?></p> 
                         <p class="paragraph"
                         v-bind:class="[validateExpiration('<?= $questionnaire['expiration'] ?>') ? 'text-danger': '']"
-                            > Due Date &emsp; &nbsp;- &emsp; {{format_date('<?= $questionnaire['expiration'] ?>')}}
-                            
+                            > Due Date &emsp; &nbsp;- &emsp; {{format_date('<?= $questionnaire['expiration'] ?>')}} 
+                        </p> 
+                        <p class="paragraph">
+                            Timer &emsp; &nbsp;&emsp; &nbsp;- &emsp; <?= $questionnaire['timer'] ?> Minutes  
                         </p>
                         <?php if($questionnaire['answerkey'] == '1'){ ?>
                         <a href="answerkey.php?questionnaire=<?= $questionnaire['qstnnr_id'] ?>&&course=<?= $crs_id ?>" class="btn btn-info btn-sm">Answer Key</a>

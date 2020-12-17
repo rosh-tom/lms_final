@@ -26,12 +26,18 @@
 
 <div id="content">  
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  -->    
-<div class="row">  
-        <div class="col-sm-12">   
-            <label for=""><?= $questionnaire_info['title'] ?></label>
-            <p class="paragraph"><b>Instruction: </b> <?= $questionnaire_info['descript'] ?></p>
-        </div>
+    <div class="row">  
+        <div class="col-sm-12">  
+                <label for=""><?= $questionnaire_info['title'] ?></label>
+                <p class="paragraph"><b>Instruction: </b> <?= $questionnaire_info['descript'] ?></p> 
+        </div> 
     </div>
+   
+    <ol class="breadcrumb sticky navigation-admin"> 
+                <h3 class="paragraph text-center">{{countDown()}}{{display_timer}}</h3>
+    </ol>
+
+   
 <?php 
     $questions = "SELECT * FROM tbl_question WHERE crs_id=:crs_id and qstnnr_id=:qstnnr_id";
     $questionsData = [
@@ -44,14 +50,14 @@
     $itemNumber = 1;
 ?>
     <div class="row">  
-        <div class="col-sm-12 margin-b-20">   
+        <div class="col-sm-12 margin-b-20 col">   
             <h3>Questions</h3>
         </div>
     </div>
  
 <?php foreach($questions as $question){ ?>
     <div class="row">  
-        <div class="col-sm-12">  
+        <div class="col-sm-12 col">  
             <div class="well well-sm">
                 <p> <?= $itemNumber++ ?>. <?= $question['question'] ?> </p> 
 <?php 
@@ -65,50 +71,54 @@
     }
 ?>
 
-                <div style="margin-left: 10px;">
-                    <div class="radio">
+                <div class="col" style="margin-left: 10px;">
+                    <div class="radio col">
                         <label>
                             <input 
+                                class="col"
                                 type="radio" 
                                 name="<?= $question['qstn_id'] ?>"
                                 @click="choose('<?= $question['qstn_id'] ?>', 'a')"
                             <?php if($countRecoverAnswer > 0){ ?>
                                     <?= ($recoverAnswer == 'a')? 'checked':'' ?>
                             <?php } ?>
-                                >A. <?= $question['a'] ?>
+                                > A. <?= $question['a'] ?>
                         </label>
                     </div>
-                    <div class="radio">
+                    <div class="radio col">
                         <label>
                             <input type="radio"
+                            class="col"
                             name="<?= $question['qstn_id'] ?>"
                             @click="choose('<?= $question['qstn_id'] ?>', 'b')"
                         <?php if($countRecoverAnswer > 0){ ?>
                             <?= ($recoverAnswer == 'b')? 'checked':'' ?>
                         <?php } ?>
-                            >B. <?= $question['b'] ?> 
+                            > B. <?= $question['b'] ?> 
                         </label>
                     </div>
-                    <div class="radio">
+                    <div class="radio col">
                         <label>
                             <input type="radio" 
+                            class="col"
                             name="<?= $question['qstn_id'] ?>" 
                             @click="choose('<?= $question['qstn_id'] ?>', 'c')"
                         <?php if($countRecoverAnswer > 0){ ?>
                             <?= ($recoverAnswer == 'c')? 'checked':'' ?>
                         <?php } ?>
-                            >C. <?= $question['c'] ?>
+                            > C. <?= $question['c'] ?>
                         </label>
                     </div>
-                    <div class="radio">
+                    <div class="radio col">
                         <label>
                             <input type="radio" 
+                            class="col"
                             name="<?= $question['qstn_id'] ?>" 
                             @click="choose('<?= $question['qstn_id'] ?>', 'd')"
                         <?php if($countRecoverAnswer > 0){ ?>
                             <?= ($recoverAnswer == 'd')? 'checked':'' ?>
                         <?php } ?>
-                            >D. <?= $question['d'] ?>
+                            > D. <?= $question['d'] ?>
                         </label>
                     </div> 
                 </div> 
@@ -141,7 +151,8 @@
     var app = new Vue({
        el: "#content",
        data: { 
-
+        timer: '',
+        display_timer: ''
        },
        methods: {
         choose: function (id, answer){
@@ -161,14 +172,66 @@
                     crs_id: '<?= $_GET['course'] ?>',
                     qstnnr_id: '<?= $_GET['questionnaire'] ?>'
                 }).then(function(response){
-                    if(!response.data){ 
-                        alert("Please answer all the items");
-                    }else{ 
+                    // if(!response.data){ 
+                    //     alert("Please answer all the items");
+                    // }else{ 
                         window.location.replace("questionnaire.php?course=<?= $_GET['course'] ?>");
-                    }
+                    // }
                 });
             },
-           
+            getTimer: function(){
+                var dt = new Date();
+                dt.setMinutes( dt.getMinutes() + <?= $questionnaire_info['timer'] ?>); 
+
+                axios.post("../../controller/students/take.controller.php", {
+                    action: 'getTimer',
+                    qstnnr_id: '<?= $_GET['questionnaire']?>',
+                    timer: dt
+
+                }).then(function(response){
+                     app.timer = response.data; 
+                    // alert(response.data);
+                });
+            },
+
+            getTimer_date: function(){
+                
+            } ,
+            countDown: function(){ 
+                    setTimeout(() => {
+
+                        var now = new Date().getTime();
+                        var distance = new Date(this.timer)- now; 
+            
+                        // Time calculations for days, hours, minutes and seconds
+                        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        
+                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                       
+                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                       
+                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                        if(days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0){
+                            this.timer = "Times Up: Answer Sheet Submitted.";
+                            this.submitQuestionnaire();
+                        }else{ 
+                            days = days > 0 ? days + ' Days ' : '';
+                            hours = hours > 0 ? hours + ' Hours ' : '';
+                            minutes = minutes > 0? minutes + ' Minutes ': '';
+                            seconds = seconds + ' Seconds ';
+
+                            this.display_timer = days + hours + minutes + seconds ; 
+                        }
+
+
+                    }, 1000); 
+                   
+            }
+       },
+       created: function(){
+           this.getTimer();
+           this.countDown();
 
        }
     });

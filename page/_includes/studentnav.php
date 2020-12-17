@@ -1,6 +1,6 @@
 <div id="studentnav"> 
         <div class="buttons">
-            <a href="index.php" class="btn btn-info btn-sm"><b><</b> Back</a> 
+            <a href="course.php" class="btn btn-info btn-sm"><b><</b> Back</a> 
             <button @click="toggleShowJumbo()" class="btn btn-warning btn-sm float-r">
                 <template v-if="showJumbo">
                     <img src="../../icons/hide.svg" class="icon_visibility">

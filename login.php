@@ -5,7 +5,7 @@
         <div id="index">
             <div class="container">
 <?php include 'includes/navigation.php'; ?>
-
+ 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++ content  -->
 <form class="form-signin" action="controller/login.controller.php" method="post" autocomplete=" " >
                 <h2 class="form-signin-heading">Please sign in</h2>
@@ -39,6 +39,14 @@
                     <?= $_SESSION['temp']['message'] ?>
                 </div>
 <?php } ?>
+
+<?php if(isset($_SESSION['temp2']['message'])){ ?>
+                <div class="alert <?= ($_SESSION['temp2']['success']) ? 'alert-success' : 'alert-danger' ?>">
+                    <?= $_SESSION['temp2']['message'] ?>
+                </div>
+<?php } 
+unset($_SESSION['temp2']);
+?>
                 <a href="forgotpass.php">Forgot password? </a>
                 <hr class="divider">
                 <a href="create.php" class="deco-none text-center"><h4>Create Student Account?</h4></a>

@@ -153,7 +153,7 @@
                                             <th>Descriptitle</th>
                                             <th>Accesscode</th>
                                             <th>Schedule</th> 
-                                            <th>View</th>
+                                             
                                         </tr>
                                     </thead>
                                     <tbody> 
@@ -163,7 +163,7 @@
                                             <td>{{course.descriptitle}}</td>
                                             <td>{{course.accesscode}}</td>
                                             <td>{{course.schedule}}</td> 
-                                            <td><a href="">View</a></td>
+                                             
                                         </tr>
                                         <template v-if="!courses.length"> 
                                             <tr>

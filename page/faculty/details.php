@@ -71,18 +71,19 @@
         $student_answer_data = [
             'qstn_id' => $question['qstn_id']
         ];
-        $student_answer = DB::query($student_answer, $student_answer_data)[0];
+        if($student_answer = DB::query($student_answer, $student_answer_data)){
      
 ?> 
     <div class="row">
         <div class="col-sm-12">
-            <div class="panel <?= ($student_answer['correct'] == 1) ? "panel-success": "panel-danger" ?>" style="margin-left: 10px; margin-right: 10px"> 
+            <div class="panel <?= ($student_answer[0]['correct'] == 1) ? "panel-success": "panel-danger" ?>" style="margin-left: 10px; margin-right: 10px"> 
             <div class="panel-heading">
-                <?= ($student_answer['correct'] == 1) ? "Correct": "Wrong" ?>
+                <?= ($student_answer[0]['correct'] == 1) ? "Correct": "Wrong" ?>
                 </div>
 
             <div class="panel-body">
-                    <p <?= ($student_answer['correct'] == 1) ? "class='text-success'": "class='text-danger' " ?> 
+             
+                    <p <?= ($student_answer[0]['correct'] == 1) ? "class='text-success'": "class='text-danger' " ?> 
                         >  
                         <?= $counter ?>.
                         <?= $question['question'] ?>                        
@@ -92,7 +93,7 @@
                             <input 
                                 type="radio"  
                                 disabled
-                                <?= ($student_answer['answer'] == 'a') ? "checked": "" ?>
+                                <?= ($student_answer[0]['answer'] == 'a') ? "checked": "" ?>
                                 >A.  <?= $question['a'] ?>
                         </label>
                     </div>
@@ -102,7 +103,7 @@
                             <input 
                                 type="radio"
                                 disabled  
-                                <?= ($student_answer['answer'] == 'b') ? "checked": "" ?>
+                                <?= ($student_answer[0]['answer'] == 'b') ? "checked": "" ?>
                                 >B.  <?= $question['b'] ?>
                         </label>
                     </div>
@@ -112,7 +113,7 @@
                             <input 
                                 type="radio"  
                                 disabled
-                                <?= ($student_answer['answer'] == 'c') ? "checked": "" ?>
+                                <?= ($student_answer[0]['answer'] == 'c') ? "checked": "" ?>
                                 >C.  <?= $question['c'] ?>
                         </label>
                     </div>
@@ -122,16 +123,70 @@
                             <input 
                                 type="radio"  
                                 disabled
-                                <?= ($student_answer['answer'] == 'd') ? "checked": "" ?>
+                                <?= ($student_answer[0]['answer'] == 'd') ? "checked": "" ?>
                                 >D.  <?= $question['d'] ?>
                         </label>
                     </div>
-                </div> 
+                </div>
+                
                 <!-- /content                       -->
             </div>
         </div>
     </div>
 <?php   
+        }else{
+?>
+ <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-danger" style="margin-left: 10px; margin-right: 10px">
+                <div class="panel-heading">
+                    No Answer
+                </div>
+                <div class="panel-body">
+                    <?= $counter .". ". $question['question']?>
+                    <div>
+                        <div class="radio">
+                            <?= ($question['answer'] == 'a')? '<label class="text-success text-bold">': '<label>'?>
+                                <input 
+                                    type="radio"
+                                    disabled 
+                                />A. <?= $question['a'] ?>
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <?= ($question['answer'] == 'b')? '<label class="text-success text-bold">': '<label>'?>
+                                <input 
+                                    type="radio"
+                                    disabled 
+                                />B. <?= $question['b'] ?>
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <?= ($question['answer'] == 'c')? '<label class="text-success text-bold">': '<label>'?>
+                                <input 
+                                    type="radio"
+                                    disabled 
+                                />C. <?= $question['c'] ?>
+                            </label>
+                        </div>
+
+                        <div class="radio">
+                            <?= ($question['answer'] == 'd')? '<label class="text-success text-bold">': '<label>'?>
+                                <input 
+                                    type="radio"
+                                    disabled 
+                                />D. <?= $question['d'] ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php 
+        }
 $counter++;  
     }
 ?> 
