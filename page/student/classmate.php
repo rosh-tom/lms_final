@@ -17,6 +17,10 @@
         'crs_id'  => $crs_id
     ];
     $studentcourse = DB::query($studentcourse, $studentcourse_data);  
+
+    $instructor_info = "SELECT * FROM tbl_user where usr_id=:usr_id";
+    $instructor_info = DB::query($instructor_info, array('usr_id'=>$course_info['usr_id']))[0];
+
  
 ?> 
 
@@ -31,22 +35,36 @@
 
 <div id="content">  
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  -->   
+    <div class="row">
+        <div class="col-sm-12 margin-b-20">
+            <h3>Instructor</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <img src="../../<?= $instructor_info['profilepic'] ?>" alt="Prifile Pic" class="cmmnt-pp">
+            <label><?= $instructor_info['firstname'] . " ". $instructor_info['middlename'] ." ". $instructor_info['lastname'] ?></label>
+         </div> 
+    </div>
+<br>
+<br>
+<hr>
+
     <div class="row">  
         <div class="col-sm-12 margin-b-20">   
             <h4>Classmates</h4>
         </div>
-    </div>  
-
+    </div>   
+    
     <?php 
         foreach($studentcourse as $stdCourse){
             $classmates = "SELECT * FROM tbl_user WHERE usr_id=:usr_id";
             $classmates_data = [
                 'usr_id'  => $stdCourse['usr_id']
-            ];
-
-            $classmates = DB::query($classmates, $classmates_data)[0]; 
-    
+            ]; 
+            $classmates = DB::query($classmates, $classmates_data)[0];  
     ?>
+
     <div class="row">
         <div class="col-sm-4">
             <img src="../../<?= $classmates['profilepic'] ?>" alt="Prifile Pic" class="cmmnt-pp">
@@ -57,6 +75,7 @@
             </label>
         </div>
     </div>
+    <hr>
 <?php } ?>
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  -->  
@@ -68,13 +87,7 @@
 <br>
 
 <script>
-      var app = new Vue({
-          el: "#content",
-          methods: {
-           
-          }
-      });
-  
+ 
 </script>
 
  

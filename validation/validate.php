@@ -19,6 +19,7 @@
             $uri_segments[2] == 'login.php' ||
             $uri_segments[2] == 'create.php' || 
             $uri_segments[2] == 'index.php' || 
+            $uri_segments[2] == 'forgotpass.php' ||
             $uri_segments[2] == ''
         ){
             header("location: page/". $_SESSION['loggedType'] ."/");

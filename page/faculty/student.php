@@ -33,7 +33,7 @@
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  -->   
     <div class="row">  
         <div class="col-sm-12 margin-b-20">   
-            <h4>Classmates</h4>
+            <h4>Students</h4>
         </div>
     </div>  
 
