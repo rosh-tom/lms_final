@@ -80,11 +80,7 @@
                         </p> 
                         <p class="paragraph">
                             Timer &emsp; &nbsp;&emsp; &nbsp;- &emsp; <?= $questionnaire['timer'] ?> Minutes  
-                        </p>
-                        <?php if($questionnaire['answerkey'] == '1'){ ?>
-                        <a href="answerkey.php?questionnaire=<?= $questionnaire['qstnnr_id'] ?>&&course=<?= $crs_id ?>" class="btn btn-info btn-sm">Answer Key</a>
-                        <?php } ?>
-                    </div>
+                        </p> 
 <?php 
     $studentProgress = "SELECT * FROM tbl_answer WHERE qstnnr_id = :qstnnr_id and usr_id=:usr_id";
     $studentProgress = DB::query($studentProgress, array(':qstnnr_id'=>$questionnaire['qstnnr_id'], ':usr_id'=>$user_info['usr_id']));
@@ -99,20 +95,35 @@
     $checkIfAnswered = count($checkIfAnswered);
     
 ?>
+
+<?php if($questionnaire['answerkey'] == '1'){ 
+        if($checkIfAnswered != 0){    
+    ?> 
+        <a href="answerkey.php?questionnaire=<?= $questionnaire['qstnnr_id'] ?>&&course=<?= $crs_id ?>" class="btn btn-info btn-sm">Answer Key</a>
+    <?php }} ?>
+</div>
+
+
                     <div class="panel-footer"> 
         <?php  if($checkIfAnswered == 0){ ?>
                 <?php if($questionItems > 0){ ?>
+                        <template v-if="!validateExpiration('<?= $questionnaire['expiration'] ?>')">
                             <a href="take.php?course=<?= $_GET['course']?>&&questionnaire=<?= $questionnaire['qstnnr_id'] ?>" class="btn btn-primary">
                                 <?= ($studentProgress == $questionItems)? 'View and Submit': 'Take'?>
                             </a>
+                        </template> 
+
+                        <span style="margin-left: 20px;">Progress: <?= $studentProgress ?> / <?= $questionItems ?> items</span>
+                        <span style="float: right; margin-top: 5px;">{{format_date('<?= $questionnaire['created_at'] ?>')}}</span>
                 <?php } ?>
-        <?php }else{ ?>
+        <?php }else{ 
+
+            ?>
                             <a class="btn btn-success" @click="showScore('<?= $questionnaire['qstnnr_id'] ?>')">
                                 Show Score
                             </a>
+                            <label for="">(Completed)</label>
         <?php } ?>
-                        <span style="margin-left: 20px;">Progress: <?= $studentProgress ?> / <?= $questionItems ?> items</span>
-                        <span style="float: right; margin-top: 5px;">{{format_date('<?= $questionnaire['created_at'] ?>')}}</span>
                     </div>  
                 </div>  
             </div>
@@ -166,8 +177,7 @@
                 var date = new Date(date);
                 if(currentDate > date){
                     return true;
-                }
-              
+                } 
             },
           }
       });

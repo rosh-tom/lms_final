@@ -10,10 +10,9 @@
 <form class="form-signin" action="controller/login.controller.php" method="post" autocomplete=" " >
                 <h2 class="form-signin-heading">Please sign in</h2>
 
-                <input 
-                type="email" 
+                <input  
                 class="form-control" 
-                placeholder="Email Address" 
+                placeholder="Email Address or ID" 
                 required  
                 name = "email"  
                 <?= (isset($_SESSION['temp']['email'])) ? "value='". $_SESSION['temp']['email'] ."'" : 'autofocus' ?> 

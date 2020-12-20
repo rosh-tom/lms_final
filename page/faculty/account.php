@@ -394,14 +394,14 @@
                 formData.append('action', 'btn_upProfile');
                 formData.append('file', this.mdl_upProfile.file);
 
-                axios.post("../../controller/students/profile.controller.php", formData, {  
+                axios.post("../../controller/faculty/profile.controller.php", formData, {  
 
                 }).then(function(response){  
                     if(response.data.success){
                         app.reload();
                     }else{
                        app.setAlerts("Something went wrong. Please try again later. ", "error", true); 
-                    }
+                    } 
                 });
 
             },

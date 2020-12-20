@@ -21,7 +21,7 @@
                 </li>
             <?php } else {  ?>  
                 <li>
-                    <?= ($uri_segments[4] == 'classmate.php')? "Peoples" : "<a href='classmate.php?course=". $_GET['course'] ."'> Peoples </a>"?> 
+                    <?= ($uri_segments[4] == 'classmate.php')? "People" : "<a href='classmate.php?course=". $_GET['course'] ."'> People </a>"?> 
                 </li> 
                
             <?php } ?>

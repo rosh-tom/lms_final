@@ -52,15 +52,27 @@
 
 <?php 
 
+// $students_with_message = 
+// "SELECT DISTINCT from_usr_id
+// FROM 
+// tbl_message 
+// WHERE 
+// to_usr_id=:to_usr_id AND 
+// crs_id=:crs_id AND 
+// from_usr_id!=:to_usr_id 
+// ORDER BY created_at DESC";
+
 $students_with_message = 
-"SELECT DISTINCT from_usr_id
+"SELECT DISTINCT std_id
 FROM 
 tbl_message 
-WHERE 
-to_usr_id=:to_usr_id AND 
-crs_id=:crs_id AND 
-from_usr_id!=:to_usr_id 
+WHERE  
+crs_id=:crs_id  
 ORDER BY created_at DESC";
+
+$students_with_message_data = [ 
+    'crs_id'    => $crs_id
+];
 
 // $students_with_message = "SELECT * 
 // FROM tbl_message 
@@ -81,10 +93,6 @@ ORDER BY created_at DESC";
 // from_usr_id!=:to_usr_id)
 // ORDER BY created_at ASC";
 
-$students_with_message_data = [
-    'to_usr_id' => $user_info['usr_id'],
-    'crs_id'    => $crs_id
-];
 $students_with_message = DB::query($students_with_message, $students_with_message_data);
 // echo "<pre>";
 // print_r($students_with_message);
@@ -106,24 +114,24 @@ $students_with_message = DB::query($students_with_message, $students_with_messag
 
 foreach($students_with_message as $message){   
 
-    $list_of_students_message = "SELECT * FROM tbl_user WHERE usr_id='". $message['from_usr_id'] ."'";
+    $list_of_students_message = "SELECT * FROM tbl_user WHERE usr_id='". $message['std_id'] ."'";
     $list_of_students_message = DB::query($list_of_students_message);
 
     $student_message_one = "SELECT * FROM tbl_message WHERE 
-                            from_usr_id='". $message["from_usr_id"] ."' AND
-                            to_usr_id='". $students_with_message_data["to_usr_id"] ."' AND 
-                            crs_id='". $students_with_message_data["crs_id"] ."' 
+                            std_id='". $message["std_id"] ."' AND 
+                            crs_id='". $crs_id ."' 
                             ORDER BY created_at DESC 
                             Limit 1";
 
     $student_message_one = DB::query($student_message_one); 
 
     // echo "<pre>";
-    // print_r($list_of_students_message);
+    // print_r($student_message_one);
     // echo "</pre>";
 
     // echo "<label>". $list_of_students_message[0]['firstname'] ."</label>";
     // echo "<label>". $student_message_one[0]['msg'] ."</label>"; 
+
     
 
 ?> 
@@ -133,7 +141,12 @@ foreach($students_with_message as $message){
                         <img src="../../<?= $list_of_students_message[0]['profilepic'] ?>" style="height: 25px; width: 25px" class="pp">
                         <b style="color: rgb(51, 122, 183)"><?= $list_of_students_message[0]['firstname'] ." ". $list_of_students_message[0]['lastname'] ?> : </b>
             
-                        <span class="paragraph"><?= $student_message_one[0]['msg']?></span>
+                        <span class="paragraph"> 
+                            <span style="color: #337ab7">
+                                <?= ($_SESSION['loggedID'] == $student_message_one[0]['from_usr_id'] ) ? 'You:': '' ?>
+                            </span>
+                            <?= $student_message_one[0]['msg']?>
+                        </span>
                         <br><span class="paragraph"><small> {{format_date('<?= $student_message_one[0]['created_at'] ?>')}}</small> 
                         </span>
                  

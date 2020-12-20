@@ -15,10 +15,10 @@ if(isset($_POST['action']) == 'btn_upProfile'){
     $target = "../../".  $data['profilepic'];
     if(move_uploaded_file($_FILES['file']['tmp_name'], $target)){
         $deleteFile = "SELECT profilepic FROM tbl_user WHERE usr_id=:usr_id";
-        $deleteFile = DB::query($deleteFile, array(':usr_id'=>$data['usr_id']))[0]['profilepic'];
-         
-            unlink("../../". $deleteFile);
-        
+        $deleteFile = DB::query($deleteFile, array(':usr_id'=>$data['usr_id']))[0]['profilepic']; 
+        if($deleteFile != 'icons/user.svg'){ 
+            unlink("../../". $deleteFile); 
+        }
         $upProfile = "UPDATE tbl_user SET profilepic=:profilepic WHERE usr_id=:usr_id";
         $upProfile = DB::query($upProfile, $data);
         if($upProfile){

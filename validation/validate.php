@@ -5,9 +5,9 @@
     $data = [];
     if(isset($uri_segments[3])) {
         if( 
-            ($uri_segments[3] == 'admin' && $_SESSION['loggedType'] != 'Admin') ||
-            ($uri_segments[3] == 'faculty' && $_SESSION['loggedType'] != 'Faculty') ||
-            ($uri_segments[3] == 'Student' && $_SESSION['loggedType'] != 'Student')
+            (($uri_segments[3] == 'admin' || $uri_segments[3] == 'Admin') && $_SESSION['loggedType'] != 'Admin') ||
+            (($uri_segments[3] == 'faculty' || $uri_segments[3] == 'Faculty') && $_SESSION['loggedType'] != 'Faculty') ||
+            (($uri_segments[3] == 'student' || $uri_segments[3] == 'Student') && $_SESSION['loggedType'] != 'Student')
         ){
             header("location: ../". $_SESSION['loggedType']);
         } 

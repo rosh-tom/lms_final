@@ -50,7 +50,7 @@
             <div class="col-sm-12">
                 <div class="panel panel-default"> 
                     <div class="panel-heading">
-                        <p class="paragraph"><small>{{post.created_at}}</small> </p> 
+                        <p class="paragraph"><small>{{formatDateTime(post.created_at)}}</small> </p> 
                         <p class="paragraph"><b><h4>{{post.title}}</h4></b></p>
                         <p class="paragraph">{{post.descript}}</p>
                     </div> 
@@ -81,8 +81,7 @@
                             </template> 
                         </center>
                     
-                    <div class="panel-footer">
-                    <button class="btn btn-default btn-sm"><img src="../../icons/chat.svg" alt="" width="20px"></button>
+                    <div class="panel-footer"> 
                     <button class="btn btn-danger btn-sm" @click="delete_post(post.pst_id, post.title)">Delete</button>  
 
                     <button class="btn btn-primary btn-sm pull-right" @click="toggle_viewComment(post.pst_id, post.title)">View Comments</button>  
@@ -444,7 +443,26 @@
                 }).then(function(response){ 
                     app.comments = response.data; 
                 }); 
-            }
+            },
+            formatDateTime: function(date){
+                if(date == ''){
+                    return;
+                }
+
+                var date = new Date(date);
+              
+
+                var hours = date.getHours();
+                var minutes = date.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ' ' + ampm;
+                return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+ 
+                
+            },
 
         },
         created: function (){

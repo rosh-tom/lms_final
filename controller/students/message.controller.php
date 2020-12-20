@@ -16,6 +16,7 @@
             'attached_file' => $filename, 
             'name_file'     => '',
             'file_type'     => '', 
+            'std_id'        => $_SESSION['loggedID'],
             'from_usr_id'  => $_SESSION['loggedID'],
             'to_usr_id'    => $_POST['to'],
             'crs_id'    => $_POST['crs_id']
@@ -41,9 +42,9 @@
         }
     
         $insertMessage = "INSERT INTO tbl_message 
-        (msg, attached_file, name_file, file_type, from_usr_id, to_usr_id, crs_id)
+        (msg, attached_file, name_file, std_id, file_type, from_usr_id, to_usr_id, crs_id)
         VALUES
-        (:msg, :attached_file, :name_file, :file_type, :from_usr_id, :to_usr_id, :crs_id)";
+        (:msg, :attached_file, :name_file, :std_id, :file_type, :from_usr_id, :to_usr_id, :crs_id)";
 
         $insertMessage = DB::query($insertMessage, $data);
 

@@ -9,7 +9,7 @@ if(isset($_POST['btn_signin'])){
         'pass'  => $_POST['pass'] 
     ];
     
-    $result = "SELECT * FROM tbl_user where email = :email";
+    $result = "SELECT * FROM tbl_user where email = :email || std_id=:email";
     $result = DB::query($result, array(':email'=>$data['email']));
 
    if(count($result) > 0){
@@ -28,17 +28,16 @@ if(isset($_POST['btn_signin'])){
                 $_SESSION['loggedType'] = $userType;
                 $_SESSION['loggedID'] = $result[0]['usr_id']; 
                 header("location: ../page/admin/index.php");
-            }
- 
+            } 
        }else{
-           $data['message'] = "Password did not match the email"; 
+           $data['message'] = "Password did not match with the Account"; 
            unset($data['password']);
            $_SESSION['temp'] = $data;
            header("location: ../login.php");
        }
    }else{
         unset($data);
-        $data['message'] = "Email not found in our database"; 
+        $data['message'] = "Email or ID not found in our database"; 
         $_SESSION['temp'] = $data;
         header("location: ../login.php");
    }
