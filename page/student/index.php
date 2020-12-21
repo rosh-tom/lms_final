@@ -50,7 +50,7 @@
         </div>
 
         <?php 
-            $announcement = "SELECT * FROM tbl_announcement WHERE audience='Faculty' || audience='Students and Faculties'";
+            $announcement = "SELECT * FROM tbl_announcement WHERE audience='Students' OR audience='Students and Faculties'";
             $announcement = DB::query($announcement);
 
             foreach($announcement as $post){ 

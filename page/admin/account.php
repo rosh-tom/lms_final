@@ -14,9 +14,7 @@
     <?php include '../_includes/navigation.php'; ?>  
     <a href="index.php" class="btn btn-info btn-sm"> HOME </a> 
 <div id="content">  
-<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  --> 
-
-
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENT  -->  
     <div class="row">
         <div class="col-sm-12">
             <h3>Account</h3>
@@ -391,7 +389,7 @@
                     }else{
                         app.setAlerts("Something went wrong. Please try again later. ", "error", true); 
                      
-                    }
+                    } 
                 });
 
             },

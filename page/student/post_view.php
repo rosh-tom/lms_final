@@ -62,8 +62,9 @@
                             </video>
 <?php } ?>
                             </center> 
-                            <a href="../../<?= $post_info['locale'] ?>" class="btn btn-default btn-sm" style="margin-top: 10px;">download</a>
- 
+                            <?php if($post_info['types'] != ''){ ?>
+                                <a href="../../<?= $post_info['locale'] ?>" class="btn btn-default btn-sm" style="margin-top: 10px;">download</a>
+                            <?php } ?>
                     </div>
                     <div class="panel-body">
 

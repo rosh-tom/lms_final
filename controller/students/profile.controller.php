@@ -17,7 +17,9 @@ if(isset($_POST['action']) == 'btn_upProfile'){
         $deleteFile = "SELECT profilepic FROM tbl_user WHERE usr_id=:usr_id";
         $deleteFile = DB::query($deleteFile, array(':usr_id'=>$data['usr_id']))[0]['profilepic'];
          
-            unlink("../../". $deleteFile);
+        if($deleteFile != 'icons/user.svg'){ 
+            unlink("../../". $deleteFile); 
+        }
         
         $upProfile = "UPDATE tbl_user SET profilepic=:profilepic WHERE usr_id=:usr_id";
         $upProfile = DB::query($upProfile, $data);
